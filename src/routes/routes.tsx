@@ -5,8 +5,8 @@ import Contact from "../pages/Contact";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import AdminDashboard from "../pages/admin/AdminDashboard";
-import UserDashboard from "../pages/user/UserDashboard";
+import { adminRoutes } from "./admin.routes";
+import { userPaths } from "./user.routes";
 
 const router = createBrowserRouter([
   {
@@ -32,22 +32,12 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <App />,
-    children: [
-      {
-        path: "dashboard",
-        element: <AdminDashboard />,
-      },
-    ],
+    children: adminRoutes,
   },
   {
     path: "/user",
     element: <App />,
-    children: [
-      {
-        path: "dashboard",
-        element: <UserDashboard />,
-      },
-    ],
+    children: userPaths,
   },
 ]);
 export default router;
