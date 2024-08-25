@@ -1,5 +1,11 @@
+import MainLayout from "./components/Layout/MainLayout";
+
 const App = () => {
-  return <div>App</div>;
+  return (
+    <div>
+      <MainLayout />
+    </div>
+  );
 };
 
 export default App;
