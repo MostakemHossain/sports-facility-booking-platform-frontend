@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
+import ProtectedRoute from "../components/Layout/ProtectedRoute";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import Home from "../pages/Home";
@@ -32,12 +33,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <App />,
+    element: <ProtectedRoute>routeGenerator(adminPaths)</ProtectedRoute>,
     children: routeGenerator(adminPaths),
   },
   {
     path: "/user",
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />,
+      </ProtectedRoute>
+    ),
     children: routeGenerator(userPaths),
   },
 ]);
