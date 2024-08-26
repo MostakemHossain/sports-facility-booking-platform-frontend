@@ -25,16 +25,6 @@ export const userPaths = [
   },
 ];
 
-export const userRoutes = userPaths.reduce((acc: TRoute[], item) => {
-  if (item.path && item.element) {
-    acc.push({
-      path: item.path,
-      element: item.element,
-    });
-  }
-  return acc;
-}, []);
-
 export const userSidebarItems = userPaths.reduce(
   (acc: TSidebarItem[], item) => {
     if (item.path && item.name) {
