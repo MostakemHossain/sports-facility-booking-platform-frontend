@@ -1,15 +1,47 @@
-import { Layout } from "antd";
-import { Outlet } from "react-router-dom";
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Button, Dropdown, Layout, Menu } from "antd";
+import { Link, Outlet } from "react-router-dom";
+import { setLogout } from "../../redux/features/auth/authSlice";
+import { useAppDispatch } from "../../redux/hooks";
 import Sidebar from "./Sidebar";
 
 const { Header, Content } = Layout;
 
 const MainLayout = () => {
+  const dispatch = useAppDispatch();
+  const handleLogout = () => {
+    dispatch(setLogout());
+  };
+  const menu = (
+    <Menu>
+      <Menu.Item key="profile">
+        <Link to="/profile">My Profile</Link>
+      </Menu.Item>
+      <Menu.Item key="logout">
+        <Button onClick={handleLogout}>Logout</Button>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh" }}>
       <Sidebar />
       <Layout>
-        <Header style={{ padding: 0 }} />
+        <Header style={{ padding: 0, background: "#001529" }}>
+          <div
+            className="flex items-center justify-end"
+            style={{ padding: "0 16px", marginTop: "10px" }}
+          >
+            <Dropdown overlay={menu} placement="bottomRight">
+              <Avatar
+                size="large"
+                icon={<UserOutlined />}
+                src="https://example.com/your-avatar-image.jpg"
+                style={{ cursor: "pointer" }}
+              />
+            </Dropdown>
+          </div>
+        </Header>
         <Content style={{ margin: "24px 16px 0" }}>
           <div
             style={{

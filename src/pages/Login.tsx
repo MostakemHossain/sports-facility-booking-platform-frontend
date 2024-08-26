@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import { setUser } from "../redux/features/auth/authSlice";
@@ -26,14 +26,20 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
-    const res = await login(data).unwrap();
-    const user = verifyToken(res?.token);
-    if (res?.success) {
-      dispatch(setUser({ user: user, token: res.token }));
-      toast.success(res?.message, {
+    try {
+      const res = await login(data).unwrap();
+      const user = verifyToken(res?.token);
+      if (res?.success) {
+        dispatch(setUser({ user: user, token: res.token }));
+        toast.success(res?.message, {
+          className: "custom-toast",
+        });
+        navigate(`/${res?.data?.role}/dashboard`);
+      }
+    } catch (error: any) {
+      toast.error(error.data.message, {
         className: "custom-toast",
       });
-      navigate("/");
     }
   };
 
@@ -105,12 +111,12 @@ const Login: React.FC = () => {
 
             <div className="flex items-center justify-center mt-4">
               <span className="text-gray-600">Don't have an account?</span>
-              <a
-                href="#"
+              <Link
+                to={"/register"}
                 className="text-blue-600 hover:underline font-bold ml-2"
               >
                 Sign Up
-              </a>
+              </Link>
             </div>
 
             <div className="mt-6">

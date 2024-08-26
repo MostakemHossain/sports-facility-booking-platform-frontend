@@ -1,4 +1,4 @@
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
 import { adminPaths } from "../../routes/admin.routes";
 import { userPaths } from "../../routes/user.routes";
@@ -24,17 +24,7 @@ const Sidebar = () => {
 
   return (
     <div>
-      <Sider
-        style={{ height: "100vh" }}
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
-      >
+      <Sider style={{ height: "100vh" }} breakpoint="lg" collapsedWidth="0">
         <div
           style={{
             height: 32,
@@ -47,7 +37,7 @@ const Sidebar = () => {
           }}
         >
           <Link to={"/"}>
-            <h1>
+            <h1 className="text-2xl">
               Sport{" "}
               <span
                 style={{
