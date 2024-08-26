@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import SHForm from "../components/form/SHForm";
+import SHInput from "../components/form/SHInput";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import { setUser } from "../redux/features/auth/authSlice";
 import { useAppDispatch } from "../redux/hooks";
@@ -17,15 +18,9 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [login] = useLoginMutation();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormInputs>();
-
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+  const onSubmit = async (data: LoginFormInputs) => {
     try {
       const res = await login(data).unwrap();
       const user = verifyToken(res?.token);
@@ -57,27 +52,23 @@ const Login: React.FC = () => {
 
         <div className="w-full md:w-1/2 bg-white p-8">
           <h2 className="text-2xl font-bold mb-6 text-gray-800">Login</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
+
+          <SHForm onSubmit={onSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700">Email</label>
-              <input
+              <SHInput
                 type="email"
-                {...register("email", { required: "Email is required" })}
-                className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+                name="email"
+                placeholder="Enter your email"
+                label="Email"
               />
-              {errors.email && (
-                <span className="text-red-500 text-sm">
-                  {errors.email.message}
-                </span>
-              )}
             </div>
 
             <div className="mb-4 relative">
-              <label className="block text-gray-700">Password</label>
-              <input
+              <SHInput
                 type={showPassword ? "text" : "password"}
-                {...register("password", { required: "Password is required" })}
-                className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+                name="password"
+                placeholder="Enter your password"
+                label="Password"
               />
               <button
                 type="button"
@@ -86,11 +77,6 @@ const Login: React.FC = () => {
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
-              {errors.password && (
-                <span className="text-red-500 text-sm">
-                  {errors.password.message}
-                </span>
-              )}
             </div>
 
             <div className="flex justify-between items-center mb-6">
@@ -129,7 +115,7 @@ const Login: React.FC = () => {
                 Sign in with Google
               </button>
             </div>
-          </form>
+          </SHForm>
         </div>
       </div>
     </div>
