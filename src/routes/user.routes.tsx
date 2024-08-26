@@ -1,16 +1,5 @@
-import { ReactNode } from "react";
-import { NavLink } from "react-router-dom";
 import CreateBooking from "../pages/user/CreateBooking";
 import UserDashboard from "../pages/user/UserDashboard";
-export type TRoute = {
-  path: string;
-  element: ReactNode;
-};
-
-export type TSidebarItem = {
-  key: string;
-  label: ReactNode;
-};
 
 export const userPaths = [
   {
@@ -24,16 +13,3 @@ export const userPaths = [
     element: <CreateBooking />,
   },
 ];
-
-export const userSidebarItems = userPaths.reduce(
-  (acc: TSidebarItem[], item) => {
-    if (item.path && item.name) {
-      acc.push({
-        key: item.name,
-        label: <NavLink to={`/user/${item.path}`}>{item.name}</NavLink>,
-      });
-    }
-    return acc;
-  },
-  []
-);
