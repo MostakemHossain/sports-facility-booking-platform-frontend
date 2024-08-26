@@ -10,16 +10,24 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
+import { setLogout, useCurrentUser } from "../../redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(useCurrentUser);
+
+  const handleLogOut = () => {
+    dispatch(setLogout());
+  };
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <nav className="bg-white border-b border-gray-200 relative">
-      {/* Top Row */}
+      
       <div className="container mx-auto flex justify-between items-center p-2 text-sm">
         <div className="flex items-center space-x-2">
           <span>Follow our social media:</span>
@@ -142,12 +150,21 @@ const Navbar = () => {
           </div>
 
           <div className="mt-4 md:mt-0">
-            <Link
-              to="/login"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold block text-center"
-            >
-              Login
-            </Link>
+            {user ? (
+              <button
+                onClick={handleLogOut}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold block text-center"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold block text-center"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>
