@@ -1,3 +1,4 @@
+import MyProfile from "../pages/MyProfile";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import CreateFacility from "../pages/admin/CreateFacility";
 import Facility from "../pages/admin/Facility";
@@ -23,5 +24,10 @@ export const adminPaths = [
     name: "Users",
     path: "users",
     element: <Users />,
+  },
+  {
+    name: "Profile",
+    path: "me",
+    element: <MyProfile />,
   },
 ];
