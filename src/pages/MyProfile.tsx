@@ -9,7 +9,6 @@ import {
   Skeleton,
   Typography,
   Upload,
-  message,
 } from "antd";
 import {
   RcFile,
@@ -18,7 +17,11 @@ import {
 } from "antd/es/upload/interface";
 import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useProfileQuery } from "../redux/features/user/userApi";
+import { toast } from "sonner";
+import {
+  useProfileQuery,
+  useUpdateMyProfileMutation,
+} from "../redux/features/user/userApi";
 
 const { Title } = Typography;
 
@@ -39,18 +42,18 @@ interface FormValues {
 
 const MyProfile = () => {
   const { data, isLoading } = useProfileQuery("");
+  const [updateMyProfile] = useUpdateMyProfileMutation();
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
 
   const { control, handleSubmit, reset } = useForm<FormValues>();
 
-  // Return skeleton while loading
   if (isLoading) {
     return <Skeleton />;
   }
 
-  // Use fetched data or default values
   const userProfile: UserProfile = data?.data || {
     name: "John Doe",
     email: "john.doe@example.com",
@@ -73,32 +76,42 @@ const MyProfile = () => {
     setIsModalVisible(false);
   };
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const formData = new FormData();
 
-    formData.append("name", data.name);
-    formData.append("phone", data.phone);
-    formData.append("address", data.address);
+    formData.append("data", JSON.stringify(data));
 
     if (fileList.length > 0) {
-      formData.append("photo", fileList[0].originFileObj as RcFile);
+      formData.append("file", fileList[0].originFileObj as RcFile);
     }
 
-    console.log("Form Data:");
-    for (let pair of formData.entries()) {
-      console.log(
-        `${pair[0]}: ${pair[1] instanceof File ? pair[1].name : pair[1]}`
-      );
+    try {
+      const res = await updateMyProfile(formData).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, {
+          className: "custom-toast",
+        });
+      }
+    } catch (error: any) {
+      toast.error(error.data.message, {
+        className: "custom-toast",
+      });
     }
-
-    message.success("Profile updated successfully.");
 
     setIsModalVisible(false);
   };
 
-  const handleFileChange = ({ fileList }: UploadChangeParam<UploadFile<any>>) =>
+  const handleFileChange = ({
+    fileList,
+  }: UploadChangeParam<UploadFile<any>>) => {
     setFileList(fileList);
+
+    if (fileList.length > 0) {
+      setUploadedFileName(fileList[0].name);
+    } else {
+      setUploadedFileName(null);
+    }
+  };
 
   return (
     <>
@@ -139,7 +152,6 @@ const MyProfile = () => {
           <Descriptions.Item label="Email">
             {userProfile.email}
           </Descriptions.Item>
-
           <Descriptions.Item label="Phone">
             {userProfile.phone}
           </Descriptions.Item>
@@ -150,7 +162,6 @@ const MyProfile = () => {
         </Descriptions>
       </Card>
 
-      {/* Edit Modal */}
       <Modal
         title="Edit Profile"
         visible={isModalVisible}
@@ -194,7 +205,6 @@ const MyProfile = () => {
             )}
           />
 
-          {/* Upload Button */}
           <div style={{ marginBottom: "16px" }}>
             <label>Upload Photo</label>
             <Upload
@@ -205,11 +215,10 @@ const MyProfile = () => {
             >
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
+            {uploadedFileName && (
+              <div style={{ marginTop: "8px" }}>{uploadedFileName}</div>
+            )}
           </div>
-
-          <Button type="primary" htmlType="submit">
-            Save Changes
-          </Button>
         </form>
       </Modal>
     </>

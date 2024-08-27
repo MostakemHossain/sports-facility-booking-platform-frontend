@@ -31,6 +31,19 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags: ["my-profile"],
     }),
+    updateMyProfile: builder.mutation({
+      query: (formData) => {
+        return {
+          url: `/auth/profile/update-my-profile`,
+          method: "PATCH",
+          body: formData,
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        };
+      },
+      invalidatesTags: ["my-profile"],
+    }),
   }),
 });
 
@@ -39,4 +52,5 @@ export const {
   useUpdateRoleMutation,
   useDeleteUserMutation,
   useProfileQuery,
+  useUpdateMyProfileMutation,
 } = userApi;
