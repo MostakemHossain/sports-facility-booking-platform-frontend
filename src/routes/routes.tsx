@@ -7,8 +7,8 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import { routeGenerator } from "../utils/routesGenerator";
-import { adminPaths } from "./admin.routes";
 import { userPaths } from "./user.routes";
+import { adminPaths } from "./admin.routes";
 
 const router = createBrowserRouter([
   {

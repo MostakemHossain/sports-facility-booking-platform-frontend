@@ -9,7 +9,14 @@ const facilityApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    getAllFacility: builder.query({
+      query: () => ({
+        url: "/facility",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useCreateFacilityMutation } = facilityApi;
+export const { useCreateFacilityMutation, useGetAllFacilityQuery } =
+  facilityApi;

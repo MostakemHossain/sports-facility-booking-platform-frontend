@@ -84,7 +84,7 @@ const Login: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 bottom-7 transform -translate-y-1/2 text-gray-600"
+                className="absolute right-4 bottom-2 transform -translate-y-1/2 text-gray-600"
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>

@@ -1,4 +1,4 @@
-import { Button, Layout, Menu } from "antd";
+import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
 import { adminPaths } from "../../routes/admin.routes";
 import { userPaths } from "../../routes/user.routes";
@@ -9,7 +9,7 @@ const userRole = {
   USER: "user",
 };
 const Sidebar = () => {
-  const role = "user";
+  const role = "admin";
   let sidebarItems;
   switch (role) {
     case userRole.ADMIN:
@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <div>
-      <Sider style={{ height: "100vh" }} breakpoint="lg" collapsedWidth="0">
+      <Sider style={{ height: "100%" }} breakpoint="lg" collapsedWidth="0">
         <div
           style={{
             height: 32,

@@ -31,7 +31,7 @@ const SHForm = <T extends FieldValues>({
 
   const submit: SubmitHandler<T> = (data) => {
     onSubmit(data);
-    reset();
+    // reset();
   };
 
   return (
