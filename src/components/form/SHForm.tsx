@@ -1,13 +1,17 @@
+import { Form } from "antd";
 import { ReactNode } from "react";
 import {
   FieldValues,
   FormProvider,
   SubmitHandler,
   useForm,
+  Resolver,
+  DefaultValues,
 } from "react-hook-form";
 
 type TFormConfig<T extends FieldValues> = {
-  defaultValues?: T;
+  defaultValues?: DefaultValues<T>;
+  resolver?: Resolver<T>;
 };
 
 type TFormProp<T extends FieldValues> = {
@@ -19,12 +23,15 @@ const SHForm = <T extends FieldValues>({
   onSubmit,
   children,
   defaultValues,
+  resolver,
 }: TFormProp<T>) => {
-  const formConfig = { defaultValues } as any;
+  const formConfig = { defaultValues, resolver };
   const methods = useForm<T>(formConfig);
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
+      <Form layout="vertical" onFinish={methods.handleSubmit(onSubmit)}>
+        {children}
+      </Form>
     </FormProvider>
   );
 };

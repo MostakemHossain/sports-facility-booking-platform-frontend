@@ -1,20 +1,31 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { z } from "zod";
 import SHForm from "../components/form/SHForm";
 import SHInput from "../components/form/SHInput";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import { setUser } from "../redux/features/auth/authSlice";
 import { useAppDispatch } from "../redux/hooks";
 import { verifyToken } from "../utils/verifyToken";
-
 interface LoginFormInputs {
   email: string;
   password: string;
 }
 
 const Login: React.FC = () => {
+  const loginSchema = z.object({
+    email: z
+      .string({
+        required_error: "Email is required",
+      })
+      .email("Invalid email"),
+    password: z.string({
+      required_error: "Password is required",
+    }),
+  });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [login] = useLoginMutation();
@@ -53,7 +64,7 @@ const Login: React.FC = () => {
         <div className="w-full md:w-1/2 bg-white p-8">
           <h2 className="text-2xl font-bold mb-6 text-gray-800">Login</h2>
 
-          <SHForm onSubmit={onSubmit}>
+          <SHForm onSubmit={onSubmit} resolver={zodResolver(loginSchema)}>
             <div className="mb-4">
               <SHInput
                 type="email"
@@ -73,7 +84,7 @@ const Login: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 bottom-2 transform -translate-y-1/2 text-gray-600"
+                className="absolute right-4 bottom-7 transform -translate-y-1/2 text-gray-600"
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>

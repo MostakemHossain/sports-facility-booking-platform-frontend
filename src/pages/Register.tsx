@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { z } from "zod";
 import SHForm from "../components/form/SHForm";
 import SHInput from "../components/form/SHInput";
 import { useRegisterAUserMutation } from "../redux/features/auth/authApi";
@@ -15,6 +17,23 @@ interface FormData {
 }
 
 const Register = () => {
+  const registerSchema = z.object({
+    name: z.string({
+      required_error: "Name is required",
+    }),
+    email: z.string({
+      required_error: "Email is required",
+    }),
+    password: z.string({
+      required_error: "Password is required",
+    }),
+    phone: z.string({
+      required_error: "Phone is required",
+    }),
+    address: z.string({
+      required_error: "Address is required",
+    }),
+  });
   const navigate = useNavigate();
   const [registerAUser] = useRegisterAUserMutation();
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -50,7 +69,7 @@ const Register = () => {
         <div className="md:w-1/2 p-6">
           <h2 className="text-4xl font-bold mb-6 text-center">Register</h2>
 
-          <SHForm onSubmit={onSubmit}>
+          <SHForm onSubmit={onSubmit} resolver={zodResolver(registerSchema)}>
             <div className="mb-4">
               <SHInput
                 type="text"
