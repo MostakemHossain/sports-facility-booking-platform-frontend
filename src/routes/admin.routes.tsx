@@ -1,6 +1,7 @@
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import CreateFacility from "../pages/admin/CreateFacility";
 import Facility from "../pages/admin/Facility";
+import Users from "../pages/admin/Users";
 
 export const adminPaths = [
   {
@@ -17,5 +18,10 @@ export const adminPaths = [
     name: "Facility",
     path: "facilities",
     element: <Facility />,
+  },
+  {
+    name: "Users",
+    path: "users",
+    element: <Users />,
   },
 ];
