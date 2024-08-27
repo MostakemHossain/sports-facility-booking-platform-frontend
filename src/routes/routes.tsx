@@ -33,7 +33,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <ProtectedRoute>routeGenerator(adminPaths)</ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: routeGenerator(adminPaths),
   },
   {
