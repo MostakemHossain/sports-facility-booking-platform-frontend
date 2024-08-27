@@ -16,7 +16,8 @@ import { FiEdit, FiTrash } from "react-icons/fi";
 import { useGetAllFacilityQuery } from "../../redux/features/admin/facility/facilityApi";
 import { setFacilities } from "../../redux/features/admin/facility/facilitySlice";
 import { useAppDispatch } from "../../redux/hooks";
-import UpdateFacility from "./UpdateFacility"; // Import the UpdateFacility component
+import UpdateFacility from "./UpdateFacility";
+import DeleteFacility from "./DeleteFacility"; // Import the DeleteFacility component
 
 const { Search } = Input;
 
@@ -42,6 +43,9 @@ const Facility = () => {
   const [selectedFacilityId, setSelectedFacilityId] = useState<string | null>(
     null
   );
+  const [isDeleteModalVisible, setIsDeleteModalVisible] =
+    useState<boolean>(false);
+  const [selectedFacilityName, setSelectedFacilityName] = useState<string>("");
 
   if (isLoading) {
     return <Skeleton avatar paragraph={{ rows: 8 }} />;
@@ -80,13 +84,29 @@ const Facility = () => {
     setIsModalVisible(true);
   };
 
-  const handleDelete = (id: string): void => {
-    console.log("Delete facility with ID:", id);
+  const handleDelete = (id: string, name: string): void => {
+    setSelectedFacilityId(id);
+    setSelectedFacilityName(name);
+    setIsDeleteModalVisible(true);
   };
 
   const handleModalClose = () => {
     setIsModalVisible(false);
     setSelectedFacilityId(null);
+  };
+
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalVisible(false);
+    setSelectedFacilityId(null);
+    setSelectedFacilityName("");
+  };
+
+  const handleConfirmDelete = (id: string) => {
+    console.log("Delete facility with ID:", id);
+    // Implement your delete logic here, using the provided id
+    setIsDeleteModalVisible(false);
+    setSelectedFacilityId(null);
+    setSelectedFacilityName("");
   };
 
   const columns: TableColumnsType<DataType> = [
@@ -130,18 +150,18 @@ const Facility = () => {
     {
       title: "Action",
       dataIndex: "_id",
-      render: (_id: string) => (
+      render: (_id: string, record: DataType) => (
         <Space size="middle">
           <Button
             type="primary"
             icon={<FiEdit />}
-            onClick={() => handleUpdate(_id)} // Pass only the ID
+            onClick={() => handleUpdate(_id)}
           />
           <Button
             type="default"
             danger
             icon={<FiTrash />}
-            onClick={() => handleDelete(_id)}
+            onClick={() => handleDelete(_id, record.name)}
           />
         </Space>
       ),
@@ -174,6 +194,14 @@ const Facility = () => {
       <Modal visible={isModalVisible} onCancel={handleModalClose} footer={null}>
         <UpdateFacility id={selectedFacilityId} onClose={handleModalClose} />
       </Modal>
+      {/* Modal for deleting facility */}
+      <DeleteFacility
+        visible={isDeleteModalVisible}
+        onClose={handleDeleteModalClose}
+       
+        facilityName={selectedFacilityName}
+        id={selectedFacilityId || ""}
+      />
     </div>
   );
 };
