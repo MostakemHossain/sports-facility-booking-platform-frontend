@@ -12,7 +12,11 @@ import {
 } from "antd";
 import { useState } from "react";
 import { FiTrash } from "react-icons/fi";
-import { useGetAllUsersQuery } from "../../redux/features/user/userApi";
+import { toast } from "sonner";
+import {
+  useGetAllUsersQuery,
+  useUpdateRoleMutation,
+} from "../../redux/features/user/userApi";
 import { useAppDispatch } from "../../redux/hooks";
 
 const { Search } = Input;
@@ -37,6 +41,7 @@ const roleOptions = [
 
 const Users = () => {
   const { data: userData, isLoading } = useGetAllUsersQuery("");
+  const [updateRole] = useUpdateRoleMutation();
   const dispatch = useAppDispatch();
   const [searchText, setSearchText] = useState<string>("");
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -89,13 +94,19 @@ const Users = () => {
     setSelectedUserName("");
   };
 
-  const handleRoleChange = (value: string, id: string) => {
-    // Log the role change to the console
-    console.log(`Changing role to ${value} for user ${id}`);
-
-    // Here you would normally make an API call to update the role in the backend
-    // Example:
-    // dispatch(updateUserRole({ userId: id, newRole: value }));
+  const handleRoleChange = async (value: string, id: string) => {
+    try {
+      const res = await updateRole({ id, data: { role: value } }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, {
+          className: "custom-toast",
+        });
+      }
+    } catch (error: any) {
+      toast.error(error.data.message, {
+        className: "custom-toast",
+      });
+    }
   };
 
   const columns: TableColumnsType<DataType> = [
