@@ -2,6 +2,7 @@ import {
   Button,
   Col,
   Input,
+  Modal,
   Row,
   Select,
   Skeleton,
@@ -14,10 +15,11 @@ import { useState } from "react";
 import { FiTrash } from "react-icons/fi";
 import { toast } from "sonner";
 import {
+  useDeleteUserMutation,
+  //   useDeleteUserMutation,
   useGetAllUsersQuery,
   useUpdateRoleMutation,
 } from "../../redux/features/user/userApi";
-import { useAppDispatch } from "../../redux/hooks";
 
 const { Search } = Input;
 const { Option } = Select;
@@ -42,12 +44,10 @@ const roleOptions = [
 const Users = () => {
   const { data: userData, isLoading } = useGetAllUsersQuery("");
   const [updateRole] = useUpdateRoleMutation();
-  const dispatch = useAppDispatch();
+  const [deleteUser] = useDeleteUserMutation();
   const [searchText, setSearchText] = useState<string>("");
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-  const [isDeleteModalVisible, setIsDeleteModalVisible] =
-    useState<boolean>(false);
   const [selectedUserName, setSelectedUserName] = useState<string>("");
 
   if (isLoading) {
@@ -72,24 +72,35 @@ const Users = () => {
       );
     });
 
-  const handleUpdate = (id: string): void => {
-    setSelectedUserId(id);
-    setIsModalVisible(true);
+  const handleDelete = async () => {
+    console.log(selectedUserId);
+    if (selectedUserId) {
+      try {
+        const res = await deleteUser(selectedUserId).unwrap();
+        if (res?.success) {
+          toast.success(res?.message, {
+            className: "custom-toast",
+          });
+        }
+      } catch (error: any) {
+        toast.error(error.data.message, {
+          className: "custom-toast",
+        });
+      }
+      setIsModalVisible(false);
+      setSelectedUserId(null);
+      setSelectedUserName("");
+    }
   };
 
-  const handleDelete = (id: string, name: string): void => {
+  const handleModalOpen = (id: string, name: string): void => {
     setSelectedUserId(id);
     setSelectedUserName(name);
-    setIsDeleteModalVisible(true);
+    setIsModalVisible(true);
   };
 
   const handleModalClose = () => {
     setIsModalVisible(false);
-    setSelectedUserId(null);
-  };
-
-  const handleDeleteModalClose = () => {
-    setIsDeleteModalVisible(false);
     setSelectedUserId(null);
     setSelectedUserName("");
   };
@@ -154,7 +165,7 @@ const Users = () => {
             type="default"
             danger
             icon={<FiTrash />}
-            onClick={() => handleDelete(_id, record.name)}
+            onClick={() => handleModalOpen(_id, record.name)}
           />
         </Space>
       ),
@@ -183,6 +194,17 @@ const Users = () => {
         pagination={{ pageSize: 8 }}
         bordered
       />
+      <Modal
+        title="Confirm Deletion"
+        visible={isModalVisible}
+        onOk={handleDelete}
+        onCancel={handleModalClose}
+        okText="Delete"
+        centered
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to delete user {selectedUserName}?</p>
+      </Modal>
     </div>
   );
 };
