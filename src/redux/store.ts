@@ -11,6 +11,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { baseApi } from "./api/baseApi";
+import facilityReducer from "./features/admin/facility/facilitySlice";
 import authReducer from "./features/auth/authSlice";
 
 const persistConfig = {
@@ -22,6 +23,7 @@ export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
     auth: persistedReducer,
+    facility: facilityReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

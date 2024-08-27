@@ -1,18 +1,22 @@
-import type { TableColumnsType, TableProps } from "antd";
 import {
   Button,
   Col,
   Image,
   Input,
+  Modal,
   Row,
   Skeleton,
   Space,
   Table,
+  TableColumnsType,
   Typography,
 } from "antd";
 import { useState } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import { useGetAllFacilityQuery } from "../../redux/features/admin/facility/facilityApi";
+import { setFacilities } from "../../redux/features/admin/facility/facilitySlice";
+import { useAppDispatch } from "../../redux/hooks";
+import UpdateFacility from "./UpdateFacility"; // Import the UpdateFacility component
 
 const { Search } = Input;
 
@@ -31,13 +35,18 @@ interface DataType extends FacilityData {
 
 const Facility = () => {
   const { data: facilityData, isLoading } = useGetAllFacilityQuery("");
+  const dispatch = useAppDispatch();
+  dispatch(setFacilities(facilityData));
   const [searchText, setSearchText] = useState<string>("");
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [selectedFacilityId, setSelectedFacilityId] = useState<string | null>(
+    null
+  );
 
   if (isLoading) {
     return <Skeleton avatar paragraph={{ rows: 8 }} />;
   }
 
-  // Type-safe mapping and filtering of facility data
   const tableData: DataType[] | undefined = facilityData?.data
     ?.map(
       ({
@@ -67,13 +76,17 @@ const Facility = () => {
     });
 
   const handleUpdate = (id: string): void => {
-    // Implement the update logic here
-    console.log("Update facility with ID:", id);
+    setSelectedFacilityId(id);
+    setIsModalVisible(true);
   };
 
   const handleDelete = (id: string): void => {
-    // Implement the delete logic here
     console.log("Delete facility with ID:", id);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+    setSelectedFacilityId(null);
   };
 
   const columns: TableColumnsType<DataType> = [
@@ -122,27 +135,18 @@ const Facility = () => {
           <Button
             type="primary"
             icon={<FiEdit />}
-            onClick={() => handleUpdate(_id)}
-          ></Button>
+            onClick={() => handleUpdate(_id)} // Pass only the ID
+          />
           <Button
             type="default"
             danger
             icon={<FiTrash />}
             onClick={() => handleDelete(_id)}
-          ></Button>
+          />
         </Space>
       ),
     },
   ];
-
-  const onChange: TableProps<DataType>["onChange"] = (
-    pagination,
-    filters,
-    sorter,
-    extra
-  ) => {
-    // Implement change handling logic if needed
-  };
 
   const handleSearch = (value: string): void => {
     setSearchText(value);
@@ -163,11 +167,13 @@ const Facility = () => {
       <Table
         columns={columns}
         dataSource={tableData}
-        onChange={onChange}
-        showSorterTooltip={{ target: "sorter-icon" }}
         pagination={{ pageSize: 5 }}
         bordered
       />
+      {/* Modal for updating facility */}
+      <Modal visible={isModalVisible} onCancel={handleModalClose} footer={null}>
+        <UpdateFacility id={selectedFacilityId} onClose={handleModalClose} />
+      </Modal>
     </div>
   );
 };
