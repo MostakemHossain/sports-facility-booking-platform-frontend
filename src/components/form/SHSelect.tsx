@@ -15,7 +15,7 @@ const SHSelect = ({ label, name, options }: TSelectProps) => {
   return (
     <Controller
       name={name}
-      render={({ field, fieldState: { error } }) => (
+      render={({ field,fieldState:{error} }) => (
         <Form.Item label={label}>
           <Select
             style={{ width: 120 }}
@@ -23,7 +23,7 @@ const SHSelect = ({ label, name, options }: TSelectProps) => {
             options={options}
             size="large"
           />
-          {error && <span className="text-red-500">{error?.message}</span>}
+              {error && <span className="text-red-500">{error?.message}</span>}
         </Form.Item>
       )}
     />

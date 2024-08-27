@@ -32,12 +32,12 @@ const MainLayout = () => {
             className="flex items-center justify-end"
             style={{ padding: "0 16px", marginTop: "10px" }}
           >
-            <Dropdown overlay={menu} placement="bottomRight">
+            <Dropdown overlay={menu} placement="bottomRight" >
               <Avatar
                 size="large"
                 icon={<UserOutlined />}
                 src="https://example.com/your-avatar-image.jpg"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer",  }}
               />
             </Dropdown>
           </div>
