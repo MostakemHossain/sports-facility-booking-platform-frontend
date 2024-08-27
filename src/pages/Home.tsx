@@ -1,4 +1,5 @@
 import Activities from "../components/Home/Activities";
+import Benefit from "../components/Home/Benefit";
 import Footer from "../components/Home/Footer";
 import HeroSection from "../components/Home/HeroSection";
 import Navbar from "../components/Home/Navbar";
@@ -9,6 +10,7 @@ const Home = () => {
       <Navbar />
       <HeroSection />
       <Activities />
+      <Benefit />
       <Footer />
     </div>
   );
