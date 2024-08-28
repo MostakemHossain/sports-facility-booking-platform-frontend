@@ -18,7 +18,9 @@ const Benefit = () => {
           {/* Text Section */}
           <div className="flex flex-col justify-center" data-aos="fade-right">
             <h2 className="text-7xl font-bold text-gray-800 mb-8">
-              Get extra benefit & the best our services.
+              Get extra <span className="text-[#EA580B]">benefit</span> & the
+              <span className="text-[#EA580B]"> best</span> our{" "}
+              <span className="text-[#EA580B]">services</span>.
             </h2>
             <p className="text-lg text-gray-500 mb-8 leading-relaxed">
               Elevate your experience with our exclusive perks. Enjoy special
@@ -28,7 +30,7 @@ const Benefit = () => {
             </p>
             <a
               href="#"
-              className="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg md:w-[30%] hover:bg-blue-700 transition duration-300"
+              className="inline-block bg-[#EA580B] text-white font-semibold py-3 px-8 rounded-full shadow-lg md:w-[30%] hover:bg-blue-700 transition duration-300"
               data-aos="fade-up"
             >
               Discover More
@@ -42,7 +44,7 @@ const Benefit = () => {
               data-aos="fade-up"
               data-aos-delay="100"
             >
-              <div className="bg-blue-600 text-white p-4 rounded-full">
+              <div className="bg-[#EA580B] text-white p-4 rounded-full">
                 <FaDollarSign className="w-10 h-10" />
               </div>
               <div className="ml-6">
@@ -61,7 +63,7 @@ const Benefit = () => {
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              <div className="bg-blue-600 text-white p-4 rounded-full">
+              <div className="bg-[#EA580B] text-white p-4 rounded-full">
                 <FaCalendarCheck className="w-10 h-10" />
               </div>
               <div className="ml-6">
@@ -80,7 +82,7 @@ const Benefit = () => {
               data-aos="fade-up"
               data-aos-delay="300"
             >
-              <div className="bg-blue-600 text-white p-4 rounded-full">
+              <div className="bg-[#EA580B] text-white p-4 rounded-full">
                 <FaHeadset className="w-10 h-10" />
               </div>
               <div className="ml-6">

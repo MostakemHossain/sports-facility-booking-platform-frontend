@@ -23,6 +23,9 @@ const Facility: React.FC = () => {
   useEffect(() => {
     AOS.init({ duration: 1000, once: false });
   }, []);
+  if (isLoading) {
+    return <Skeleton />;
+  }
 
   return (
     <div className="max-w-7xl mx-auto">
