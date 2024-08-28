@@ -1,5 +1,5 @@
 import AOS from "aos";
-import "aos/dist/aos.css"; // Import AOS styles
+import "aos/dist/aos.css";
 import { useEffect } from "react";
 import { FaCalendarCheck, FaDollarSign, FaHeadset } from "react-icons/fa";
 

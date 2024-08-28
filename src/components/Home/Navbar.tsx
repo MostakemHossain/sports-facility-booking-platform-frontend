@@ -27,7 +27,6 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white border-b border-gray-200 relative">
-      
       <div className="container mx-auto flex justify-between items-center p-2 text-sm">
         <div className="flex items-center space-x-2">
           <span>Follow our social media:</span>
@@ -120,12 +119,14 @@ const Navbar = () => {
           </Link>
           <div className="relative group block md:inline-block py-2">
             <Link
-              to="/services"
+              to="/facilities"
               className={`text-gray-800 font-bold flex items-center ${
-                isActive("/services") ? "text-blue-600" : "hover:text-blue-600"
+                isActive("/facilities")
+                  ? "text-blue-600"
+                  : "hover:text-blue-600"
               }`}
             >
-              Services
+              Facilities
             </Link>
           </div>
           <Link

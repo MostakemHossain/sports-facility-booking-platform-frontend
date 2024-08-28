@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
+import Facility from "../components/Home/Facility";
 import ProtectedRoute from "../components/Layout/ProtectedRoute";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
@@ -7,8 +8,8 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import { routeGenerator } from "../utils/routesGenerator";
-import { userPaths } from "./user.routes";
 import { adminPaths } from "./admin.routes";
+import { userPaths } from "./user.routes";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/about",
     element: <About />,
+  },
+  {
+    path: "/facilities",
+    element: <Facility />,
   },
   {
     path: "/admin",
