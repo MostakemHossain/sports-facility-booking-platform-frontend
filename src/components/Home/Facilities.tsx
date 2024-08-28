@@ -36,7 +36,7 @@ const Facilities: React.FC = () => {
                 className="bg-white p-4 rounded-lg shadow-lg"
                 data-aos="fade-up"
               >
-                <FacilityCard facility={undefined as any} /> 
+                <FacilityCard facility={undefined as any} />
               </div>
             ))
           : data?.data
@@ -49,8 +49,8 @@ const Facilities: React.FC = () => {
       {/* View All Facilities Button */}
       <div className="text-center mt-12">
         <a
-          href="/facilities" 
-          className="bg-[#EA580B] text-white py-2 px-6 rounded-md hover:bg-blue-600 transition-colors duration-300"
+          href="/facilities"
+          className="bg-[#EA580B] text-white py-3 px-6 rounded-md hover:bg-blue-600 transition-colors duration-300"
         >
           View All Facilities
         </a>
