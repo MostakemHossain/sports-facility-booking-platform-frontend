@@ -2,6 +2,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import React, { useEffect } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export interface Facility {
   _id: string;
@@ -19,9 +20,15 @@ interface FacilityCardProps {
 }
 
 const FacilityCard: React.FC<FacilityCardProps> = ({ facility }) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    AOS.init({ duration: 1000,once: false });
+    AOS.init({ duration: 1000, once: false });
   }, []);
+
+  const handleViewDetails = () => {
+    navigate(`/facility/${facility._id}`);
+  };
 
   return (
     <div
@@ -45,7 +52,10 @@ const FacilityCard: React.FC<FacilityCardProps> = ({ facility }) => {
             {facility?.location}
           </div>
         </div>
-        <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-200 focus:ring-2 focus:ring-blue-400">
+        <button
+          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-200 focus:ring-2 focus:ring-blue-400"
+          onClick={handleViewDetails}
+        >
           View Details
         </button>
       </div>

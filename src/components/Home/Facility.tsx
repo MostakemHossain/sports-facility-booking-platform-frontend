@@ -26,7 +26,6 @@ const Facility: React.FC = () => {
   if (isLoading) {
     return <Skeleton />;
   }
-
   return (
     <div className="max-w-7xl mx-auto">
       <Navbar />

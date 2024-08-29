@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Facility from "../components/Home/Facility";
+import FacilityDetails from "../components/Home/FacilityDetails";
 import ProtectedRoute from "../components/Layout/ProtectedRoute";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: "/facilities",
     element: <Facility />,
+  },
+  {
+    path: "/facility/:id",
+    element: <FacilityDetails />,
   },
   {
     path: "/admin",
