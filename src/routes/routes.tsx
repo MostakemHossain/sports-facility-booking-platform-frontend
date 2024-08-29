@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
+import BookingPage from "../components/Home/BookingPage";
 import Facility from "../components/Home/Facility";
 import FacilityDetails from "../components/Home/FacilityDetails";
 import ProtectedRoute from "../components/Layout/ProtectedRoute";
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: "/facility/:id",
     element: <FacilityDetails />,
+  },
+  {
+    path: "/facility/booking/:id",
+    element: <BookingPage />,
   },
   {
     path: "/admin",

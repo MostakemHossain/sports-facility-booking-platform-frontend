@@ -4,9 +4,10 @@ import { Controller } from "react-hook-form";
 type TDateProps = {
   name: string;
   label?: string;
+  onChange?: (date: any) => void; // Add this line
 };
 
-const SHDatePicker = ({ name, label }: TDateProps) => {
+const SHDatePicker = ({ name, label, onChange }: TDateProps) => {
   return (
     <>
       <Controller
@@ -17,8 +18,10 @@ const SHDatePicker = ({ name, label }: TDateProps) => {
               {...field}
               id={name}
               size="large"
-              style={{
-                width: "100%",
+              style={{ width: "100%" }}
+              onChange={(date) => {
+                field.onChange(date); // Call react-hook-form's onChange
+                if (onChange) onChange(date); // Call the passed onChange prop if it exists
               }}
             />
             {error && <span className="text-red-500">{error?.message}</span>}

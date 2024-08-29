@@ -1,12 +1,12 @@
 import { FaDollarSign, FaMapMarkerAlt } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetFacilityByIdQuery } from "../../redux/features/admin/facility/facilityApi";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
 const FacilityDetails = () => {
   const params = useParams();
-
+  const navigate = useNavigate();
   const { data, isLoading } = useGetFacilityByIdQuery(params.id);
 
   if (isLoading) {
@@ -16,6 +16,10 @@ const FacilityDetails = () => {
       </div>
     );
   }
+
+  const handleBookNow = () => {
+    navigate(`/facility/booking/${params.id}`);
+  };
 
   return (
     <div>
@@ -53,12 +57,15 @@ const FacilityDetails = () => {
                   <FaDollarSign className="inline mr-2" />
                   Price per hour
                 </span>
-                <span className="block text-lg sm:text-xl lg:text-2xl font-medium text-green-600">
+                <span className="block text-lg sm:text-xl lg:text-2xl font-medium text-[#EA580B]">
                   ${data?.data?.pricePerHour}
                 </span>
               </div>
             </div>
-            <button className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-lg sm:text-xl lg:text-2xl font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition-transform transform hover:scale-105">
+            <button
+              onClick={handleBookNow}
+              className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-lg sm:text-xl lg:text-2xl font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition-transform transform hover:scale-105"
+            >
               Book Now
             </button>
           </div>

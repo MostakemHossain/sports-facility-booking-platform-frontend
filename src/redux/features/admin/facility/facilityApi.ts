@@ -16,13 +16,6 @@ const facilityApi = baseApi.injectEndpoints({
       }),
       providesTags: ["facility"],
     }),
-    // getSingleFacility: builder.query({
-    //   query: (id) => ({
-    //     url: `/facility/:${id}`,
-    //     method: "GET",
-    //   }),
-    //   providesTags: ["facility"],
-    // }),
     getFacilityById: builder.query({
       query: (id) => ({
         url: `/facility/${id}`,
@@ -44,6 +37,17 @@ const facilityApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["facility"],
     }),
+    getAvailableTimeSlots: builder.query({
+      query: ({ facility, date }) => {
+        console.log("Fetching available time slots for facility ID:", facility);
+        console.log("Selected date:", date);
+        return {
+          url: `/check-availability`,
+          params: { facility, date },
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
@@ -53,5 +57,5 @@ export const {
   useGetFacilityByIdQuery,
   useUpdateFacilityMutation,
   useDeleteFacilityMutation,
-  // useGetSingleFacilityQuery,
+  useGetAvailableTimeSlotsQuery,
 } = facilityApi;

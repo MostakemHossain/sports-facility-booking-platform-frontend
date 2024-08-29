@@ -6,9 +6,10 @@ type TInputProps = {
   label?: string;
   placeholder?: string;
   type: string;
+  value?: string;
 };
 
-const SHInput = ({ type, name, label, placeholder }: TInputProps) => {
+const SHInput = ({ type, name, label, placeholder, value }: TInputProps) => {
   return (
     <>
       <Controller
@@ -20,6 +21,7 @@ const SHInput = ({ type, name, label, placeholder }: TInputProps) => {
               type={type}
               id={name}
               placeholder={placeholder}
+              value={value}
               size="large"
             />
             {error && <span className="text-red-500">{error?.message}</span>}
