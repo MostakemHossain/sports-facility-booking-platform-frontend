@@ -1,31 +1,34 @@
 import { Skeleton } from "antd";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
+import { useCreateBookingMutation } from "../../redux/features/admin/booking/booking.Api";
 import {
   useGetAvailableTimeSlotsQuery,
   useGetFacilityByIdQuery,
 } from "../../redux/features/admin/facility/facilityApi";
+import { formatDate } from "../../utils/formatDate";
+import { formatTime } from "../../utils/formatTime";
 import SHDatePicker from "../form/SHDatePicker";
 import SHForm from "../form/SHForm";
 import SHInput from "../form/SHInput";
 import SHTimePicker from "../form/SHTimePicker";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
-
-const formatDate = (date: any) => {
-  if (!date) return "";
-
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-};
+interface BookingDetails {
+  facility: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+}
 
 const BookingPage = () => {
+  const [createBooking] = useCreateBookingMutation();
+  const navigate = useNavigate();
   const { id } = useParams();
   const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedStartTime, setSelectedStartTime] = useState<string>("");
+  const [selectedEndTime, setSelectedEndTime] = useState<string>("");
   const [showSlots, setShowSlots] = useState<boolean>(false);
 
   const { data: facility, isLoading: facilityLoading } =
@@ -42,12 +45,12 @@ const BookingPage = () => {
     setShowSlots(false);
   };
 
-  const onSubmit = (data: any) => {
-    if (!selectedDate) {
-      console.log("No date selected");
-      return;
-    }
-    console.log("Form Submitted:", data);
+  const handleStartTimeChange = (time: any) => {
+    setSelectedStartTime(time);
+  };
+
+  const handleEndTimeChange = (time: any) => {
+    setSelectedEndTime(time);
   };
 
   const handleCheckAvailability = () => {
@@ -56,6 +59,31 @@ const BookingPage = () => {
       return;
     }
     setShowSlots(true);
+  };
+
+  const onSubmit = async (data: any) => {
+    if (!selectedDate || !selectedStartTime || !selectedEndTime) {
+      toast.error("Date and time must be selected");
+      return;
+    }
+
+    const bookingDetails: BookingDetails = {
+      facility: facility?.data?._id || id!,
+      date: formatDate(selectedDate),
+      startTime: formatTime(selectedStartTime),
+      endTime: formatTime(selectedEndTime),
+    };
+
+    try {
+      const res = await createBooking(bookingDetails).unwrap();
+      console.log(res);
+      if (res?.success) {
+        toast.success(res?.message, { className: "custom-toast" });
+        // navigate(`/${res?.role}/dashboard/my-bookings`);
+      }
+    } catch (error: any) {
+      toast.error(error.data.message, { className: "custom-toast" });
+    }
   };
 
   if (facilityLoading || slotsLoading) {
@@ -138,16 +166,24 @@ const BookingPage = () => {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <SHTimePicker name="startTime" label="Start Time" />
-            <SHTimePicker name="endTime" label="End Time" />
+            <SHTimePicker
+              name="startTime"
+              label="Start Time"
+              onChange={(time) => handleStartTimeChange(time)}
+            />
+            <SHTimePicker
+              name="endTime"
+              label="End Time"
+              onChange={(time) => handleEndTimeChange(time)}
+            />
           </div>
 
           <div>
             <button
-              type="button"
+              type="submit"
               className="w-full bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-800 transition"
             >
-              Proceed to Pay
+              Booking request
             </button>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import MainLayout from "./components/Layout/MainLayout";
 import ProtectedRoute from "./components/Layout/ProtectedRoute";
-import "aos/dist/aos.css"; // Import AOS styles
+import "aos/dist/aos.css";
 import AOS from "aos";
 import React from "react";
 

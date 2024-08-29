@@ -1,4 +1,5 @@
-import CreateBooking from "../pages/user/CreateBooking";
+import MyProfile from "../pages/MyProfile";
+import MyBookings from "../pages/user/MyBookings";
 import UserDashboard from "../pages/user/UserDashboard";
 
 export const userPaths = [
@@ -8,8 +9,13 @@ export const userPaths = [
     element: <UserDashboard />,
   },
   {
-    name: "Create Booking",
-    path: "create-booking",
-    element: <CreateBooking />,
+    name: "My Bookings",
+    path: "my-bookings",
+    element: <MyBookings />,
+  },
+  {
+    name: "Profile",
+    path: "me",
+    element: <MyProfile />,
   },
 ];

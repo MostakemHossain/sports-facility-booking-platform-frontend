@@ -4,9 +4,10 @@ import { Controller } from "react-hook-form";
 type TTimeProps = {
   name: string;
   label?: string;
+  onChange?: (date: any) => void;
 };
 
-const SHTimePicker = ({ name, label }: TTimeProps) => {
+const SHTimePicker = ({ name, label, onChange }: TTimeProps) => {
   return (
     <>
       <Controller
@@ -16,6 +17,10 @@ const SHTimePicker = ({ name, label }: TTimeProps) => {
             <TimePicker
               {...field}
               id={name}
+              onChange={(date) => {
+                field.onChange(date);
+                if (onChange) onChange(date);
+              }}
               size="large"
               style={{
                 width: "100%",
