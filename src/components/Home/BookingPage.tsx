@@ -79,7 +79,7 @@ const BookingPage = () => {
       console.log(res);
       if (res?.success) {
         toast.success(res?.message, { className: "custom-toast" });
-        // navigate(`/${res?.role}/dashboard/my-bookings`);
+        navigate(`/user/my-bookings`);
       }
     } catch (error: any) {
       toast.error(error.data.message, { className: "custom-toast" });
