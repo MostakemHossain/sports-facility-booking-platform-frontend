@@ -8,7 +8,11 @@ import {
   Table,
   Typography,
 } from "antd";
-import { useGetAllBookingQuery } from "../../redux/features/admin/booking/booking.Api";
+import { toast } from "sonner";
+import {
+  useGetAllBookingQuery,
+  useUpdateBookingStatusMutation,
+} from "../../redux/features/admin/booking/booking.Api";
 
 interface Facility {
   name: string;
@@ -30,16 +34,25 @@ interface Booking {
 
 const AllBookings = () => {
   const { data, isLoading } = useGetAllBookingQuery("");
-  //   const [updateBookingStatus] = useUpdateBookingStatusMutation();
+  const [updateBookingStatus] = useUpdateBookingStatusMutation();
 
   const bookingsCount = data?.data?.length || 0;
 
   const handleStatusChange = async (bookingId: string, newStatus: string) => {
-    console.log(bookingId, newStatus);
     try {
-      
-    } catch (error) {
-      console.error("Failed to update booking status:", error);
+      const res = await updateBookingStatus({
+        id: bookingId,
+        data: { status: newStatus },
+      }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message, {
+          className: "custom-toast",
+        });
+      }
+    } catch (error: any) {
+      toast.error(error.data.message, {
+        className: "custom-toast",
+      });
     }
   };
 
@@ -58,7 +71,7 @@ const AllBookings = () => {
       ),
     },
     {
-      title: "Name",
+      title: "Title",
       dataIndex: ["facility", "name"],
       sorter: (a: Booking, b: Booking) =>
         a.facility.name.localeCompare(b.facility.name),
@@ -67,8 +80,8 @@ const AllBookings = () => {
       ),
     },
     {
-      title: "Description",
-      dataIndex: ["facility", "description"],
+      title: "User",
+      dataIndex: ["user", "email"],
       ellipsis: true,
     },
     {
@@ -87,14 +100,21 @@ const AllBookings = () => {
     {
       title: "Status",
       dataIndex: "isBooked",
-      render: (status: string) => (
-        <Typography.Text
-          type={status === "confirmed" ? "success" : "warning"}
-          strong
-        >
-          {status.charAt(0).toUpperCase() + status.slice(1)}
-        </Typography.Text>
-      ),
+      render: (status: string) => {
+        let color: "success" | "warning" | "danger" | undefined;
+        if (status === "confirmed") {
+          color = "success";
+        } else if (status === "pending") {
+          color = "danger"; 
+        } else {
+          color = "warning";
+        }
+        return (
+          <Typography.Text type={color} strong>
+            {status.charAt(0).toUpperCase() + status.slice(1)}
+          </Typography.Text>
+        );
+      },
     },
     {
       title: "Action",
@@ -121,7 +141,7 @@ const AllBookings = () => {
     <div style={{ marginTop: 10 }}>
       <Row justify="space-between" style={{ marginBottom: 16 }}>
         <Col>
-          <Typography.Title level={4}>My Bookings</Typography.Title>
+          <Typography.Title level={4}>All Bookings</Typography.Title>
         </Col>
         <Col>
           <Badge count={bookingsCount} style={{ backgroundColor: "#52c41a" }}>

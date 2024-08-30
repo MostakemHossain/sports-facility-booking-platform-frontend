@@ -21,8 +21,24 @@ const bookingApi = baseApi.injectEndpoints({
         url: "/bookings/admin",
         method: "GET",
       }),
+      providesTags: ["booking"],
+    }),
+    updateBookingStatus: builder.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `/bookings/admin/status/${id}`,
+          method: "PUT",
+          body: { status: data },
+        };
+      },
+      invalidatesTags: ["booking"],
     }),
   }),
 });
 
-export const { useCreateBookingMutation, useGetUserBookingQuery,useGetAllBookingQuery } = bookingApi;
+export const {
+  useCreateBookingMutation,
+  useGetUserBookingQuery,
+  useGetAllBookingQuery,
+  useUpdateBookingStatusMutation,
+} = bookingApi;

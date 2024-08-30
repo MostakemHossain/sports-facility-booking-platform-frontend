@@ -18,3 +18,12 @@ export type TRoute = {
   path: string;
   element: ReactNode;
 };
+
+
+export type User = {
+  id: string;
+  email: string;
+  role: string;
+  exp: number;
+  iat: number;
+};

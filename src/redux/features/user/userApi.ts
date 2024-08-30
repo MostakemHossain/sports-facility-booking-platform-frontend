@@ -37,9 +37,9 @@ const userApi = baseApi.injectEndpoints({
           url: `/auth/profile/update-my-profile`,
           method: "PATCH",
           body: formData,
-        //   headers: {
-        //     "Content-Type": "multipart/form-data",
-        //   },
+          //   headers: {
+          //     "Content-Type": "multipart/form-data",
+          //   },
         };
       },
       invalidatesTags: ["my-profile"],

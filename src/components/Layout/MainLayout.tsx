@@ -1,25 +1,34 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Dropdown, Layout, Menu } from "antd";
+import { useSelector } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
-import { setLogout } from "../../redux/features/auth/authSlice";
+import { setLogout, useCurrentUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import Sidebar from "./Sidebar";
+import { RootState } from "../../redux/store";
 
 const { Header, Content } = Layout;
 
 const MainLayout = () => {
   const dispatch = useAppDispatch();
+  const user = useSelector((state: RootState) => useCurrentUser(state)); // Make sure to cast if necessary
+
   const handleLogout = () => {
     dispatch(setLogout());
   };
+
   const menu = (
     <Menu>
-      <Menu.Item key="profile">
-        <Link to="/profile">My Profile</Link>
-      </Menu.Item>
-      <Menu.Item key="logout">
-        <Button onClick={handleLogout}>Logout</Button>
-      </Menu.Item>
+      {user && (
+        <>
+          <Menu.Item key="profile">
+            <Link to={`/${user.role}/me`}>My Profile</Link>
+          </Menu.Item>
+          <Menu.Item key="logout">
+            <Button onClick={handleLogout}>Logout</Button>
+          </Menu.Item>
+        </>
+      )}
     </Menu>
   );
 
