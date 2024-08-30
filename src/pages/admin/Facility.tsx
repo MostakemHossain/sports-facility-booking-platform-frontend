@@ -101,14 +101,7 @@ const Facility = () => {
     setSelectedFacilityName("");
   };
 
-  const handleConfirmDelete = (id: string) => {
-    console.log("Delete facility with ID:", id);
-    // Implement your delete logic here, using the provided id
-    setIsDeleteModalVisible(false);
-    setSelectedFacilityId(null);
-    setSelectedFacilityName("");
-  };
-
+ 
   const columns: TableColumnsType<DataType> = [
     {
       title: "Photo",

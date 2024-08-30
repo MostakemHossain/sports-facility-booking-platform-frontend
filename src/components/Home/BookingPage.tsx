@@ -61,7 +61,7 @@ const BookingPage = () => {
     setShowSlots(true);
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     if (!selectedDate || !selectedStartTime || !selectedEndTime) {
       toast.error("Date and time must be selected");
       return;

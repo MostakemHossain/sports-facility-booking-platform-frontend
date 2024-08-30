@@ -25,7 +25,7 @@ const updateFacilitySchema = z.object({
 });
 
 const UpdateFacility: React.FC<UpdateFacilityProps> = ({ id, onClose }) => {
-  const { data: facilityData } = useGetAllFacilityQuery("");
+  const { data: facilityData } = useGetAllFacilityQuery({});
   if (!id) return null;
   const dispatch = useAppDispatch();
 

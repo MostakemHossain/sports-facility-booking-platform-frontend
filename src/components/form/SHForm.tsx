@@ -27,11 +27,9 @@ const SHForm = <T extends FieldValues>({
 }: TFormProp<T>) => {
   const formConfig = { defaultValues, resolver };
   const methods = useForm<T>(formConfig);
-  const { reset } = methods;
 
   const submit: SubmitHandler<T> = (data) => {
     onSubmit(data);
-    // reset();
   };
 
   return (
