@@ -16,8 +16,8 @@ import { FiEdit, FiTrash } from "react-icons/fi";
 import { useGetAllFacilityQuery } from "../../redux/features/admin/facility/facilityApi";
 import { setFacilities } from "../../redux/features/admin/facility/facilitySlice";
 import { useAppDispatch } from "../../redux/hooks";
-import UpdateFacility from "./UpdateFacility";
 import DeleteFacility from "./DeleteFacility"; // Import the DeleteFacility component
+import UpdateFacility from "./UpdateFacility";
 
 const { Search } = Input;
 
@@ -35,7 +35,7 @@ interface DataType extends FacilityData {
 }
 
 const Facility = () => {
-  const { data: facilityData, isLoading } = useGetAllFacilityQuery("");
+  const { data: facilityData, isLoading } = useGetAllFacilityQuery({});
   const dispatch = useAppDispatch();
   dispatch(setFacilities(facilityData));
   const [searchText, setSearchText] = useState<string>("");
@@ -198,7 +198,6 @@ const Facility = () => {
       <DeleteFacility
         visible={isDeleteModalVisible}
         onClose={handleDeleteModalClose}
-       
         facilityName={selectedFacilityName}
         id={selectedFacilityId || ""}
       />

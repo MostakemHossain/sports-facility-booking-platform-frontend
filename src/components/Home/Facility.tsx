@@ -1,8 +1,9 @@
 import { Input, Skeleton } from "antd";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetAllFacilityQuery } from "../../redux/features/admin/facility/facilityApi";
+import { useDebounced } from "../../redux/hooks";
 import FacilityCard from "./FacilityCard";
 import Navbar from "./Navbar";
 
@@ -18,7 +19,17 @@ export interface Facility {
 }
 
 const Facility: React.FC = () => {
-  const { data, isLoading } = useGetAllFacilityQuery("");
+  const query: Record<string, any> = {};
+  const [searchTerm, setsearchTerm] = useState("");
+  const debouncedTerm = useDebounced({
+    searchQuery: searchTerm,
+    delay: 600,
+  });
+  if (!!debouncedTerm) {
+    query["searchTerm"] = searchTerm;
+  }
+
+  const { data, isLoading } = useGetAllFacilityQuery({ ...query });
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: false });
@@ -44,6 +55,7 @@ const Facility: React.FC = () => {
         <div className="flex justify-end mb-6" data-aos="fade-left">
           <Input
             type="text"
+            onChange={(e) => setsearchTerm(e.target.value)}
             placeholder="Search By name,location, price etc."
             className="p-2 border border-gray-300 mb-5 rounded w-full sm:w-1/3 focus:outline-none focus:border-blue-400 transition duration-200"
           />

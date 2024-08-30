@@ -5,7 +5,7 @@ import { useGetAllFacilityQuery } from "../../redux/features/admin/facility/faci
 import FacilityCard, { Facility } from "./FacilityCard";
 
 const Facilities: React.FC = () => {
-  const { data, isLoading } = useGetAllFacilityQuery("");
+  const { data, isLoading } = useGetAllFacilityQuery({});
 
   React.useEffect(() => {
     AOS.init({ duration: 2000, once: false });

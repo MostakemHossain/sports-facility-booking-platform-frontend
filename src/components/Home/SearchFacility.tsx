@@ -4,11 +4,22 @@ import React, { useState } from "react";
 import Typewriter from "typewriter-effect";
 
 import { useGetAllFacilityQuery } from "../../redux/features/admin/facility/facilityApi";
+import { useDebounced } from "../../redux/hooks";
 import FacilityCard, { Facility } from "./FacilityCard";
 
 const SearchFacility: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const { data, isLoading } = useGetAllFacilityQuery("");
+  const query: Record<string, any> = {};
+  const [searchTerm, setsearchTerm] = useState("");
+  const debouncedTerm = useDebounced({
+    searchQuery: searchTerm,
+    delay: 600,
+  });
+  if (!!debouncedTerm) {
+    query["searchTerm"] = searchTerm;
+  }
+  console.log(searchTerm);
+
+  const { data, isLoading } = useGetAllFacilityQuery({ ...query });
 
   React.useEffect(() => {
     AOS.init({ duration: 1000, once: false });
@@ -41,7 +52,7 @@ const SearchFacility: React.FC = () => {
             type="text"
             placeholder="Search Facilities by name, location, price etc."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => setsearchTerm(e.target.value)}
             className="p-3 border border-gray-300 rounded-l-md w-full sm:w-1/2 lg:w-1/3 focus:outline-none focus:border-[#EA580B] transition duration-200"
           />
           <button

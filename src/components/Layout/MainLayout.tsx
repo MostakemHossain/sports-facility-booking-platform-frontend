@@ -11,8 +11,7 @@ const { Header, Content } = Layout;
 
 const MainLayout = () => {
   const dispatch = useAppDispatch();
-  const user = useSelector((state: RootState) => useCurrentUser(state)); // Make sure to cast if necessary
-
+  const user = useSelector((state: RootState) => useCurrentUser(state));
   const handleLogout = () => {
     dispatch(setLogout());
   };
