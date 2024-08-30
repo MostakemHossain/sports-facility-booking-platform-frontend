@@ -1,5 +1,14 @@
-import { Col, Image, Row, Skeleton, Table, Typography, Badge } from "antd";
-import { useGetUserBookingQuery } from "../../redux/features/admin/booking/booking.Api";
+import {
+  Badge,
+  Col,
+  Image,
+  Row,
+  Select,
+  Skeleton,
+  Table,
+  Typography,
+} from "antd";
+import { useGetAllBookingQuery } from "../../redux/features/admin/booking/booking.Api";
 
 interface Facility {
   name: string;
@@ -19,11 +28,20 @@ interface Booking {
   isBooked: string;
 }
 
-const MyBookings = () => {
-  const { data, isLoading } = useGetUserBookingQuery("");
+const AllBookings = () => {
+  const { data, isLoading } = useGetAllBookingQuery("");
+  //   const [updateBookingStatus] = useUpdateBookingStatusMutation();
 
-  // Calculate the number of bookings
   const bookingsCount = data?.data?.length || 0;
+
+  const handleStatusChange = async (bookingId: string, newStatus: string) => {
+    console.log(bookingId, newStatus);
+    try {
+      
+    } catch (error) {
+      console.error("Failed to update booking status:", error);
+    }
+  };
 
   const columns = [
     {
@@ -64,7 +82,7 @@ const MyBookings = () => {
       dataIndex: ["facility", "pricePerHour"],
       sorter: (a: Booking, b: Booking) =>
         a.facility.pricePerHour - b.facility.pricePerHour,
-      render: (price: number) => `$${price.toFixed(2)}`,
+      render: (price: number) => `$${price?.toFixed(2)}`,
     },
     {
       title: "Status",
@@ -76,6 +94,21 @@ const MyBookings = () => {
         >
           {status.charAt(0).toUpperCase() + status.slice(1)}
         </Typography.Text>
+      ),
+    },
+    {
+      title: "Action",
+      render: (record: Booking) => (
+        <Select
+          defaultValue={record.isBooked}
+          style={{ width: 120 }}
+          onChange={(value) => handleStatusChange(record._id, value)}
+          options={[
+            { label: "Confirmed", value: "confirmed" },
+            { label: "Pending", value: "pending" },
+            { label: "Canceled", value: "canceled" },
+          ]}
+        />
       ),
     },
   ];
@@ -91,7 +124,7 @@ const MyBookings = () => {
           <Typography.Title level={4}>My Bookings</Typography.Title>
         </Col>
         <Col>
-          <Badge count={bookingsCount} style={{ backgroundColor: '#52c41a' }}>
+          <Badge count={bookingsCount} style={{ backgroundColor: "#52c41a" }}>
             <Typography.Text>Bookings</Typography.Text>
           </Badge>
         </Col>
@@ -107,4 +140,4 @@ const MyBookings = () => {
   );
 };
 
-export default MyBookings;
+export default AllBookings;

@@ -11,12 +11,18 @@ const bookingApi = baseApi.injectEndpoints({
       invalidatesTags: ["booking"],
     }),
     getUserBooking: builder.query({
-      query: (data) => ({
+      query: () => ({
         url: "/bookings/user",
+        method: "GET",
+      }),
+    }),
+    getAllBooking: builder.query({
+      query: () => ({
+        url: "/bookings/admin",
         method: "GET",
       }),
     }),
   }),
 });
 
-export const { useCreateBookingMutation, useGetUserBookingQuery } = bookingApi;
+export const { useCreateBookingMutation, useGetUserBookingQuery,useGetAllBookingQuery } = bookingApi;
