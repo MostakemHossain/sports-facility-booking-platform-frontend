@@ -107,6 +107,16 @@ const Navbar = () => {
           >
             Home
           </Link>
+          {user && (
+            <Link
+              to={`/${user.role}/dashboard`}
+              className={`text-gray-800 font-bold flex items-center ${
+                isActive("/dashboard") ? "text-blue-600" : "hover:text-blue-600"
+              }`}
+            >
+              Dashboard
+            </Link>
+          )}
           <Link
             to="/about"
             className={`block md:inline-block font-bold py-2 ${
@@ -139,16 +149,6 @@ const Navbar = () => {
           >
             Contact Us
           </Link>
-          <div className="relative group block md:inline-block py-2">
-            <Link
-              to="/pages"
-              className={`text-gray-800 font-bold flex items-center ${
-                isActive("/pages") ? "text-blue-600" : "hover:text-blue-600"
-              }`}
-            >
-              Pages
-            </Link>
-          </div>
 
           <div className="mt-4 md:mt-0">
             {user ? (
