@@ -1,27 +1,59 @@
-import { Button, Modal, Table, message } from "antd";
+import { Button, Modal, Skeleton, Table } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
-import { useGetAllContactQuery } from "../../redux/features/contact/contact.api";
+import { toast } from "sonner";
+import {
+  useDeleteContactMutation,
+  useGetAllContactQuery,
+} from "../../redux/features/contact/contact.api";
+
+interface Contact {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+}
 
 const ContactInfo = () => {
-  const { data } = useGetAllContactQuery("");
+  const { data, isLoading } = useGetAllContactQuery("");
+  const [deleteContact] = useDeleteContactMutation();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedContact, setSelectedContact] = useState(null);
+  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
 
-//   // Function to handle the delete button click
-//   const handleDelete = (contact) => {
-//     setSelectedContact(contact);
-//     setIsModalVisible(true);
-//   };
+  const handleDelete = (contact: Contact) => {
+    setSelectedContact(contact);
+    setIsModalVisible(true);
+  };
 
-//   // Function to confirm deletion
-//   const confirmDelete = () => {
-//     message.success(`Contact ${selectedContact?.name} deleted successfully`);
-//     setIsModalVisible(false);
-//     // TODO: Implement the actual deletion logic (e.g., API call)
-//   };
+  const confirmDelete = async () => {
+    if (selectedContact) {
+      try {
+        const res = await deleteContact(selectedContact._id).unwrap();
 
-  // Table columns definition
-  const columns = [
+        if (res?.success) {
+          toast.success(res?.message, {
+            className: "custom-toast",
+          });
+        }
+
+        setIsModalVisible(false);
+      } catch (error: any) {
+        toast.error(error.data.message, {
+          className: "custom-toast",
+        });
+      }
+    }
+  };
+  if (isLoading) {
+    return (
+      <div>
+        <Skeleton />
+      </div>
+    );
+  }
+
+  const columns: ColumnsType<Contact> = [
     {
       title: "Name",
       dataIndex: "name",
@@ -45,11 +77,11 @@ const ContactInfo = () => {
     {
       title: "Action",
       key: "action",
-    //   render: (text, record) => (
-    //     // <Button type="primary" danger onClick={() => handleDelete(record)}>
-    //     //   Delete
-    //     // </Button>
-    //   ),
+      render: (_, record) => (
+        <Button type="primary" danger onClick={() => handleDelete(record)}>
+          Delete
+        </Button>
+      ),
     },
   ];
 
@@ -64,12 +96,13 @@ const ContactInfo = () => {
       <Modal
         title="Confirm Deletion"
         visible={isModalVisible}
-        // onOk={confirmDelete}
+        centered
+        onOk={confirmDelete}
         onCancel={() => setIsModalVisible(false)}
       >
         <p>
           Are you sure you want to delete the contact{" "}
-          {/* <strong>{selectedContact?.name}</strong>? */}
+          <strong>{selectedContact?.name}</strong>?
         </p>
       </Modal>
     </>

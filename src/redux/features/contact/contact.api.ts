@@ -17,14 +17,18 @@ const contactApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["contact"],
     }),
-    deleteUser: builder.mutation({
+    deleteContact: builder.mutation({
       query: (id) => ({
-        url: `/auth/delete/${id}`,
+        url: `/contact/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["user"],
+      invalidatesTags: ["contact"],
     }),
   }),
 });
 
-export const { useCreateContactMutation, useGetAllContactQuery } = contactApi;
+export const {
+  useCreateContactMutation,
+  useGetAllContactQuery,
+  useDeleteContactMutation,
+} = contactApi;
