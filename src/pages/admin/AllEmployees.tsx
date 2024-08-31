@@ -1,6 +1,7 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { Button, Modal, Skeleton, Space, Table, message } from "antd";
+import { Button, Modal, Skeleton, Space, Table } from "antd";
 import React from "react";
+import { toast } from "sonner";
 import {
   useDeleteEmployeeMutation,
   useGetAllEmployeeQuery,
@@ -33,13 +34,20 @@ const AllEmployees: React.FC = () => {
   const handleOk = async () => {
     if (selectedEmployeeId) {
       try {
-        await deleteEmployee(selectedEmployeeId).unwrap();
-        message.success("Employee deleted successfully");
-      } catch (err) {
-        message.error("Failed to delete employee");
+        const res = await deleteEmployee(selectedEmployeeId).unwrap();
+
+        if (res?.success) {
+          toast.success(res?.message, {
+            className: "custom-toast",
+          });
+          setIsModalVisible(false);
+        }
+      } catch (error: any) {
+        toast.error(error.data.message, {
+          className: "custom-toast",
+        });
       }
     }
-    setIsModalVisible(false);
   };
 
   const handleCancel = () => {
