@@ -1,5 +1,7 @@
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
+import { useCurrentUser } from "../../redux/features/auth/authSlice";
+import { useAppSelector } from "../../redux/hooks";
 import { adminPaths } from "../../routes/admin.routes";
 import { userPaths } from "../../routes/user.routes";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
@@ -9,7 +11,8 @@ const userRole = {
   USER: "user",
 };
 const Sidebar = () => {
-  const role = "admin";
+  const user = useAppSelector(useCurrentUser);
+  const role = user?.role;
   let sidebarItems;
   switch (role) {
     case userRole.ADMIN:
