@@ -1,6 +1,7 @@
 import MyProfile from "../pages/MyProfile";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AllBookings from "../pages/admin/AllBookings";
+import AllEmployees from "../pages/admin/AllEmployees";
 import ContactInfo from "../pages/admin/ContactInfo";
 import CreateFacility from "../pages/admin/CreateFacility";
 import Facility from "../pages/admin/Facility";
@@ -27,6 +28,12 @@ export const adminPaths = [
     path: "all-bookings",
     element: <AllBookings />,
   },
+  {
+    name: "All Employees",
+    path: "employees",
+    element: <AllEmployees />,
+  },
+
   {
     name: "Users",
     path: "users",
