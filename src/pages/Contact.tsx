@@ -1,8 +1,31 @@
+import { useForm } from "react-hook-form";
 import { FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
+import { toast } from "sonner";
 import Footer from "../components/Home/Footer";
 import Navbar from "../components/Home/Navbar";
+import { useCreateContactMutation } from "../redux/features/contact/contact.api";
 
 const ContactUs = () => {
+  const [createContact] = useCreateContactMutation();
+  const { register, handleSubmit, reset } = useForm();
+
+  const onSubmit = async (data: any) => {
+    try {
+      const res = await createContact(data).unwrap();
+
+      if (res?.success) {
+        toast.success(res?.message, {
+          className: "custom-toast",
+        });
+        reset();
+      }
+    } catch (error: any) {
+      toast.error(error.data.message, {
+        className: "custom-toast",
+      });
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -91,32 +114,32 @@ const ContactUs = () => {
               upcoming events? Fill out the form below, and our team will get
               back to you as soon as possible.
             </p>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid grid-cols-1 md:grid-cols-1 gap-6 mb-4">
                 <input
                   type="text"
-                  placeholder="Full Name"
+                  placeholder="Name"
+                  {...register("name")}
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
 
                 <input
                   type="email"
                   placeholder="Email Address"
+                  {...register("email")}
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
                   type="tel"
                   placeholder="Phone Number"
+                  {...register("phone")}
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <input
-                type="text"
-                placeholder="Subject"
-                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+
               <textarea
                 placeholder="Message"
+                {...register("message")}
                 className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               ></textarea>
               <button
