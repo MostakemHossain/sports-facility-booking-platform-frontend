@@ -1,6 +1,8 @@
 import { FaDollarSign, FaMapMarkerAlt } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetFacilityByIdQuery } from "../../redux/features/admin/facility/facilityApi";
+import { useCurrentUser } from "../../redux/features/auth/authSlice";
+import { useAppSelector } from "../../redux/hooks";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
@@ -8,7 +10,7 @@ const FacilityDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { data, isLoading } = useGetFacilityByIdQuery(params.id);
-
+  const user = useAppSelector(useCurrentUser);
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -18,7 +20,11 @@ const FacilityDetails = () => {
   }
 
   const handleBookNow = () => {
-    navigate(`/facility/booking/${params.id}`);
+    if (!user) {
+      navigate("/login");
+    } else {
+      navigate(`/facility/booking/${params.id}`);
+    }
   };
 
   return (

@@ -8,10 +8,12 @@ import About from "../pages/About";
 import Contact from "../pages/Contact";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+
 import Register from "../pages/Register";
 import { routeGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./admin.routes";
 import { userPaths } from "./user.routes";
+import NotFound from "../components/Home/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -59,10 +61,16 @@ const router = createBrowserRouter([
     path: "/user",
     element: (
       <ProtectedRoute>
-        <App />,
+        <App />
       </ProtectedRoute>
     ),
     children: routeGenerator(userPaths),
   },
+
+  {
+    path: "*",
+    element: <NotFound />,
+  },
 ]);
+
 export default router;
