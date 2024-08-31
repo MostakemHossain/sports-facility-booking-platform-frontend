@@ -1,6 +1,6 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Space, Typography, Upload } from "antd";
-import "antd/dist/reset.css"; // Import Ant Design styles
+import "antd/dist/reset.css"; 
 import type { RcFile, UploadFile } from "antd/es/upload/interface";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
