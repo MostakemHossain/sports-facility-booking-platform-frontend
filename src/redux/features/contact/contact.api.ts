@@ -2,12 +2,12 @@ import { baseApi } from "../../api/baseApi";
 
 const contactApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllUsers: builder.query({
+    getAllContact: builder.query({
       query: () => ({
-        url: "/auth/get-all-users",
+        url: "/contact",
         method: "GET",
       }),
-      providesTags: ["user"],
+      providesTags: ["contact"],
     }),
     createContact: builder.mutation({
       query: (data) => ({
@@ -27,4 +27,4 @@ const contactApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateContactMutation } = contactApi;
+export const { useCreateContactMutation, useGetAllContactQuery } = contactApi;
