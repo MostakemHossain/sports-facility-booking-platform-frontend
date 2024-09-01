@@ -15,7 +15,7 @@ import { useState } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import { useGetAllFacilityQuery } from "../../redux/features/admin/facility/facilityApi";
 import { setFacilities } from "../../redux/features/admin/facility/facilitySlice";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useDebounced } from "../../redux/hooks";
 import DeleteFacility from "./DeleteFacility"; // Import the DeleteFacility component
 import UpdateFacility from "./UpdateFacility";
 
@@ -35,7 +35,19 @@ interface DataType extends FacilityData {
 }
 
 const Facility = () => {
-  const { data: facilityData, isLoading } = useGetAllFacilityQuery({});
+  const query: Record<string, any> = {};
+  const [searchTerm, setsearchTerm] = useState("");
+  const debouncedTerm = useDebounced({
+    searchQuery: searchTerm,
+    delay: 600,
+  });
+  if (!!debouncedTerm) {
+    query["searchTerm"] = searchTerm;
+  }
+
+  const { data: facilityData, isLoading } = useGetAllFacilityQuery({
+    ...query,
+  });
   const dispatch = useAppDispatch();
   dispatch(setFacilities(facilityData));
   const [searchText, setSearchText] = useState<string>("");
@@ -101,7 +113,6 @@ const Facility = () => {
     setSelectedFacilityName("");
   };
 
- 
   const columns: TableColumnsType<DataType> = [
     {
       title: "Photo",
@@ -173,6 +184,7 @@ const Facility = () => {
             placeholder="Search by name, location, or price"
             allowClear
             onSearch={handleSearch}
+            onChange={(e) => setsearchTerm(e.target.value)}
             style={{ width: 300 }}
           />
         </Col>
@@ -183,11 +195,11 @@ const Facility = () => {
         pagination={{ pageSize: 5 }}
         bordered
       />
-      {/* Modal for updating facility */}
+
       <Modal visible={isModalVisible} onCancel={handleModalClose} footer={null}>
         <UpdateFacility id={selectedFacilityId} onClose={handleModalClose} />
       </Modal>
-      {/* Modal for deleting facility */}
+
       <DeleteFacility
         visible={isDeleteModalVisible}
         onClose={handleDeleteModalClose}

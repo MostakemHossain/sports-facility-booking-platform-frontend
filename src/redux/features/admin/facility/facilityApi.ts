@@ -8,6 +8,7 @@ const facilityApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["facility"],
     }),
     getAllFacility: builder.query({
       query: (arg: Record<string, any>) => ({

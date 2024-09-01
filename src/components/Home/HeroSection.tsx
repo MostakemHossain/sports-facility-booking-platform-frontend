@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import Typewriter from "typewriter-effect";
 
-const images = [
-  "https://www.nationalclubgolfer.com/wp-content/uploads/2022/06/sharinggolfclubs.jpg",
-  "https://www.thesouthafrican.com/wp-content/uploads/2019/04/bdd2b9e9-louis-oosthuizen.jpg",
-  "https://www.suttoncricketclub.com/files/2023/04/Josh-Blake.jpeg",
-];
+const images = ["h1.jpg", "h2.jpg", "h3.jpg"];
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -13,7 +9,7 @@ const HeroSection = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prevImage) => (prevImage + 1) % images.length);
-    }, 5000); // Change image every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);

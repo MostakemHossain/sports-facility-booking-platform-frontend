@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "antd";
 import { FieldValues } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import SHForm from "../../components/form/SHForm";
@@ -27,6 +28,7 @@ const facilitySchema = z.object({
 
 const CreateFacility = () => {
   const [createFacility] = useCreateFacilityMutation();
+  const navigate = useNavigate();
 
   const onSubmit = async (data: FieldValues) => {
     try {
@@ -36,6 +38,7 @@ const CreateFacility = () => {
         toast.success(res?.message, {
           className: "custom-toast",
         });
+        navigate("/admin/facilities");
       }
     } catch (error: any) {
       toast.error(error.data.message, {
