@@ -9,7 +9,7 @@ import { setLogout, setUser } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:7001/api",
+  baseUrl: "https://sports-edge-booking-platform-backend.vercel.app/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
@@ -27,10 +27,13 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 > = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 401) {
-    const res = await fetch("http://localhost:7001/api/auth/refresh-token", {
-      method: "POST",
-      credentials: "include",
-    });
+    const res = await fetch(
+      "https://sports-edge-booking-platform-backend.vercel.app/api/auth/refresh-token",
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
     const data = await res.json();
 
     if (data.data.token) {
@@ -53,6 +56,13 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ["facility", "user", "booking","my-profile","contact","employee"],
+  tagTypes: [
+    "facility",
+    "user",
+    "booking",
+    "my-profile",
+    "contact",
+    "employee",
+  ],
   endpoints: () => ({}),
 });
