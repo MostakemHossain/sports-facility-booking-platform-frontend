@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Typewriter from "typewriter-effect";
 
-const images = ["h1.jpg", "h2.jpg", "h3.jpg"];
+const images = ["h1.jpg", "h2.jpg", "h3.jpeg"];
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
