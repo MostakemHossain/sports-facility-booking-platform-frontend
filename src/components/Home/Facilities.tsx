@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import AOS from "aos";
 import "aos/dist/aos.css";
 import React from "react";
+import { Link } from "react-router-dom";
 import { useGetAllFacilityQuery } from "../../redux/features/admin/facility/facilityApi";
 import FacilityCard, { Facility } from "./FacilityCard";
 
@@ -48,12 +50,12 @@ const Facilities: React.FC = () => {
 
       {/* View All Facilities Button */}
       <div className="text-center mt-12">
-        <a
-          href="/facilities"
+        <Link
+          to="/facilities"
           className="bg-[#EA580B] text-white py-3 px-6 rounded-md hover:bg-blue-600 transition-colors duration-300"
         >
           View All Facilities
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 import { Input, Skeleton } from "antd";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -19,6 +20,7 @@ export interface Facility {
 }
 
 const Facility: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const query: Record<string, any> = {};
   const [searchTerm, setsearchTerm] = useState("");
   const debouncedTerm = useDebounced({
