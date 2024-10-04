@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signInWithPopup } from "firebase/auth";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,10 +8,15 @@ import { toast } from "sonner";
 import { z } from "zod";
 import SHForm from "../components/form/SHForm";
 import SHInput from "../components/form/SHInput";
-import { useLoginMutation } from "../redux/features/auth/authApi";
+import { auth, googleProvider } from "../firebaseConfig";
+import {
+  useGoogleMutation,
+  useLoginMutation,
+} from "../redux/features/auth/authApi";
 import { setUser } from "../redux/features/auth/authSlice";
 import { useAppDispatch } from "../redux/hooks";
 import { verifyToken } from "../utils/verifyToken";
+
 interface LoginFormInputs {
   email: string;
   password: string;
@@ -26,10 +33,12 @@ const Login: React.FC = () => {
       required_error: "Password is required",
     }),
   });
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [login] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
+  const [google] = useGoogleMutation();
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
@@ -44,6 +53,35 @@ const Login: React.FC = () => {
       }
     } catch (error: any) {
       toast.error(error.data.message, {
+        className: "custom-toast",
+      });
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const userInfo = result.user;
+      const token = await userInfo.getIdToken();
+      const data = {
+        email: userInfo.email,
+        id: token,
+        password: userInfo.uid,
+      };
+
+      const res = await google(data).unwrap();
+
+      const user = verifyToken(res?.data?.token);
+      if (res?.success) {
+        console.log("hello 1");
+        dispatch(setUser({ user: user, token: res.data.token }));
+        toast.success(res?.message, {
+          className: "custom-toast",
+        });
+        navigate(`/${res?.data?.data?.role}/dashboard`);
+      }
+    } catch (error: any) {
+      toast.error(`Google sign-in failed: ${error.message}`, {
         className: "custom-toast",
       });
     }
@@ -117,11 +155,14 @@ const Login: React.FC = () => {
             </div>
 
             <div className="mt-6">
-              <button className="w-full flex items-center justify-center bg-gray-100 text-gray-700 py-2 rounded-lg border border-gray-300 hover:bg-gray-200 transition duration-200">
+              <button
+                onClick={handleGoogleLogin}
+                className="w-full flex items-center justify-center bg-gray-100 text-gray-700 py-2 rounded-lg border border-gray-300 hover:bg-gray-200 transition duration-200"
+              >
                 <img
                   src="https://img.icons8.com/ios-filled/50/000000/google-logo.png"
                   alt="Google"
-                  className="w-5 h-5 mr-2 "
+                  className="w-5 h-5 mr-2"
                 />
                 Sign in with Google
               </button>

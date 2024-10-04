@@ -1,12 +1,21 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signInWithPopup } from "firebase/auth";
+import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import SHForm from "../components/form/SHForm";
 import SHInput from "../components/form/SHInput";
-import { useRegisterAUserMutation } from "../redux/features/auth/authApi";
+import { auth, googleProvider } from "../firebaseConfig";
+import {
+  useGoogleMutation,
+  useRegisterAUserMutation,
+} from "../redux/features/auth/authApi";
+import { setUser } from "../redux/features/auth/authSlice";
+import { useAppDispatch } from "../redux/hooks";
+import { verifyToken } from "../utils/verifyToken";
 
 interface FormData {
   name: string;
@@ -35,8 +44,39 @@ const Register = () => {
     }),
   });
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [registerAUser] = useRegisterAUserMutation();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [google] = useGoogleMutation();
+
+  const handleGoogleSignUp = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const userInfo = result.user;
+      const token = await userInfo.getIdToken();
+      const data = {
+        email: userInfo.email,
+        id: token,
+        password: userInfo.uid,
+      };
+
+      const res = await google(data).unwrap();
+
+      const user = verifyToken(res?.data?.token);
+      if (res?.success) {
+        console.log("hello 1");
+        dispatch(setUser({ user: user, token: res.data.token }));
+        toast.success(res?.message, {
+          className: "custom-toast",
+        });
+        navigate(`/${res?.data?.data?.role}/dashboard`);
+      }
+    } catch (error: any) {
+      toast.error(`Google sign-in failed: ${error.message}`, {
+        className: "custom-toast",
+      });
+    }
+  };
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -140,7 +180,10 @@ const Register = () => {
           </div>
 
           <div className="mt-6">
-            <button className="w-full flex items-center justify-center bg-gray-100 text-gray-700 py-2 rounded-lg border border-gray-300 hover:bg-gray-200 transition duration-200">
+            <button
+              onClick={handleGoogleSignUp}
+              className="w-full flex items-center justify-center bg-gray-100 text-gray-700 py-2 rounded-lg border border-gray-300 hover:bg-gray-200 transition duration-200"
+            >
               <img
                 src="https://img.icons8.com/ios-filled/50/000000/google-logo.png"
                 alt="Google"
