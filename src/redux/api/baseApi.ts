@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   BaseQueryFn,
   DefinitionType,
@@ -10,6 +11,7 @@ import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://sports-edge-backend.vercel.app/api",
+  // baseUrl: "http://localhost:7001/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
@@ -29,6 +31,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   if (result?.error?.status === 401) {
     const res = await fetch(
       "https://sports-edge-backend.vercel.app/api/auth/refresh-token",
+      // "http://localhost:7001/api/auth/refresh-token",
       {
         method: "POST",
         credentials: "include",
