@@ -26,13 +26,9 @@ interface LoginFormInputs {
 const Login: React.FC = () => {
   const loginSchema = z.object({
     email: z
-      .string({
-        required_error: "Email is required",
-      })
+      .string({ required_error: "Email is required" })
       .email("Invalid email"),
-    password: z.string({
-      required_error: "Password is required",
-    }),
+    password: z.string({ required_error: "Password is required" }),
   });
 
   const dispatch = useAppDispatch();
@@ -40,41 +36,30 @@ const Login: React.FC = () => {
   const [login] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
   const [google] = useGoogleMutation();
+  const [loading, setLoading] = useState(false); 
 
-  // Loading states
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingType, setLoadingType] = useState<string | null>(null);
-
-  // Initialize useForm
   const { reset } = useForm<LoginFormInputs>();
 
   const onSubmit = async (data: LoginFormInputs) => {
+    setLoading(true); 
     try {
-      setIsLoading(true);
-      setLoadingType("login"); 
       const res = await login(data).unwrap();
       const user = verifyToken(res?.token);
       if (res?.success) {
         dispatch(setUser({ user: user, token: res.token }));
-        toast.success(res?.message, {
-          className: "custom-toast",
-        });
+        toast.success(res?.message, { className: "custom-toast" });
         navigate(`/${res?.data?.role}/dashboard`);
       }
     } catch (error: any) {
-      toast.error(error.data.message, {
-        className: "custom-toast",
-      });
+      toast.error(error.data.message, { className: "custom-toast" });
     } finally {
-      setIsLoading(false);
-      setLoadingType(null);
+      setLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
+    setLoading(true); 
     try {
-      setIsLoading(true);
-      setLoadingType("google");
       const result = await signInWithPopup(auth, googleProvider);
       const userInfo = result.user;
       const token = await userInfo.getIdToken();
@@ -89,9 +74,7 @@ const Login: React.FC = () => {
       const user = verifyToken(res?.data?.token);
       if (res?.success) {
         dispatch(setUser({ user: user, token: res.data.token }));
-        toast.success(res?.message, {
-          className: "custom-toast",
-        });
+        toast.success(res?.message, { className: "custom-toast" });
         navigate(`/${res?.data?.data?.role}/dashboard`);
       }
     } catch (error: any) {
@@ -99,8 +82,7 @@ const Login: React.FC = () => {
         className: "custom-toast",
       });
     } finally {
-      setIsLoading(false);
-      setLoadingType(null); 
+      setLoading(false); 
     }
   };
 
@@ -108,38 +90,26 @@ const Login: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
+    setLoading(true); 
     reset();
     const demoUserData = {
       email: import.meta.env.VITE_DUMMY_USER,
       password: import.meta.env.VITE_DUMMY_PASS,
     };
-    try {
-      setIsLoading(true);
-      setLoadingType("demoUser"); 
-      await onSubmit(demoUserData);
-    } finally {
-      setIsLoading(false);
-      setLoadingType(null); 
-    }
+    await onSubmit(demoUserData);
   };
 
   const handleDemoAdminLogin = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
+    setLoading(true); 
     reset();
     const demoAdminData = {
       email: import.meta.env.VITE_DUMMY_ADMIN,
       password: import.meta.env.VITE_DUMMY_PASS,
     };
-    try {
-      setIsLoading(true);
-      setLoadingType("demoAdmin"); 
-      await onSubmit(demoAdminData);
-    } finally {
-      setIsLoading(false);
-      setLoadingType(null); 
-    }
+    await onSubmit(demoAdminData);
   };
 
   return (
@@ -193,14 +163,12 @@ const Login: React.FC = () => {
 
             <button
               type="submit"
-              className={`w-full py-2 rounded-lg transition duration-200 ${
-                isLoading && loadingType === "login"
-                  ? "bg-gray-400"
-                  : "bg-blue-500"
-              } text-white hover:bg-blue-600`}
-              disabled={isLoading}
+              className={`w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={loading} // Disable button when loading
             >
-              {isLoading && loadingType === "login" ? "Loading..." : "Sign In"}
+              {loading ? "Signing In..." : "Sign In"}
             </button>
 
             <div className="flex items-center justify-center mt-4">
@@ -216,54 +184,38 @@ const Login: React.FC = () => {
             <div className="mt-6">
               <button
                 onClick={handleGoogleLogin}
-                className={`w-full flex items-center justify-center py-2 rounded-lg border transition duration-200 ${
-                  isLoading && loadingType === "google"
-                    ? "bg-gray-400"
-                    : "bg-gray-100"
-                } text-gray-700 border-gray-300 hover:bg-gray-200`}
-                disabled={isLoading}
+                className={`w-full flex items-center justify-center bg-gray-100 text-gray-700 py-2 rounded-lg border border-gray-300 hover:bg-gray-200 transition duration-200 ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={loading} // Disable button when loading
               >
-                {isLoading && loadingType === "google" ? (
-                  "Loading..."
-                ) : (
-                  <>
-                    <img
-                      src="https://img.icons8.com/ios-filled/50/000000/google-logo.png"
-                      alt="Google"
-                      className="w-5 h-5 mr-2"
-                    />
-                    Sign in with Google
-                  </>
-                )}
+                <img
+                  src="https://img.icons8.com/ios-filled/50/000000/google-logo.png"
+                  alt="Google"
+                  className="w-5 h-5 mr-2"
+                />
+                {loading ? "Signing in with Google..." : "Sign in with Google"}
               </button>
             </div>
 
             <div className="flex justify-between mt-4">
               <button
                 onClick={handleDemoUserLogin}
-                className={`w-full py-2 rounded-lg transition duration-200 ${
-                  isLoading && loadingType === "demoUser"
-                    ? "bg-gray-400"
-                    : "bg-green-500"
-                } text-white hover:bg-green-600`}
-                disabled={isLoading}
+                className={`w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-200 mr-2 ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={loading} 
               >
-                {isLoading && loadingType === "demoUser"
-                  ? "Loading..."
-                  : "Demo User"}
+                {loading ? "Loading..." : "Demo User"}
               </button>
               <button
                 onClick={handleDemoAdminLogin}
-                className={`w-full py-2 rounded-lg transition duration-200 ${
-                  isLoading && loadingType === "demoAdmin"
-                    ? "bg-gray-400"
-                    : "bg-red-500"
-                } text-white hover:bg-red-600`}
-                disabled={isLoading}
+                className={`w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-200 ml-2 ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={loading}
               >
-                {isLoading && loadingType === "demoAdmin"
-                  ? "Loading..."
-                  : "Demo Admin"}
+                {loading ? "Loading..." : "Demo Admin"}
               </button>
             </div>
           </SHForm>
