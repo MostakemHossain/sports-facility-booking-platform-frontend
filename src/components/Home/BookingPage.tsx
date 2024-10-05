@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Skeleton } from "antd";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,6 +16,7 @@ import SHInput from "../form/SHInput";
 import SHTimePicker from "../form/SHTimePicker";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
+
 interface BookingDetails {
   facility: string;
   date: string;
@@ -29,20 +31,19 @@ const BookingPage = () => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedStartTime, setSelectedStartTime] = useState<string>("");
   const [selectedEndTime, setSelectedEndTime] = useState<string>("");
-  const [showSlots, setShowSlots] = useState<boolean>(false);
 
-  const { data: facility, isLoading: facilityLoading } =
-    useGetFacilityByIdQuery(id);
-
+  // Automatically fetch available slots when the date is selected
   const { data: availableSlots, isLoading: slotsLoading } =
     useGetAvailableTimeSlotsQuery(
       { facility: id, date: formatDate(selectedDate) },
       { skip: !selectedDate }
     );
 
+  const { data: facility, isLoading: facilityLoading } =
+    useGetFacilityByIdQuery(id);
+
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
-    setShowSlots(false);
   };
 
   const handleStartTimeChange = (time: any) => {
@@ -51,14 +52,6 @@ const BookingPage = () => {
 
   const handleEndTimeChange = (time: any) => {
     setSelectedEndTime(time);
-  };
-
-  const handleCheckAvailability = () => {
-    if (!selectedDate) {
-      console.log("No date selected");
-      return;
-    }
-    setShowSlots(true);
   };
 
   const onSubmit = async () => {
@@ -76,7 +69,6 @@ const BookingPage = () => {
 
     try {
       const res = await createBooking(bookingDetails).unwrap();
-      console.log(res);
       if (res?.success) {
         toast.success(res?.message, { className: "custom-toast" });
         navigate(`/user/my-bookings`);
@@ -90,11 +82,16 @@ const BookingPage = () => {
     return (
       <p>
         <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
       </p>
     );
   }
 
   const slotItems = Array.isArray(availableSlots?.data)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ? availableSlots.data.map((slot: any, index: number) => (
         <li key={index} className="mb-2">
           {slot.startTime} - {slot.endTime}
@@ -124,23 +121,12 @@ const BookingPage = () => {
             <p className="text-sm text-gray-500 mt-1">Facility Details</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 mb-8">
-            <div>
-              <SHDatePicker
-                name="bookingDate"
-                label="Booking Date"
-                onChange={handleDateChange}
-              />
-            </div>
-            <div className="flex items-end">
-              <button
-                type="button"
-                className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
-                onClick={handleCheckAvailability}
-              >
-                Check Availability
-              </button>
-            </div>
+          <div className="mb-4">
+            <SHDatePicker
+              name="bookingDate"
+              label="Booking Date"
+              onChange={handleDateChange}
+            />
           </div>
 
           {selectedDate && (
@@ -152,7 +138,7 @@ const BookingPage = () => {
             </div>
           )}
 
-          {showSlots && (
+          {selectedDate && (
             <div className="mb-4">
               <h4 className="text-lg font-semibold ">Available Slots</h4>
               <ul className="grid md:grid-cols-2 grid-cols-1">

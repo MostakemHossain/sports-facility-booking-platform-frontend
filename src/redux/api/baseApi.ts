@@ -10,8 +10,8 @@ import { setLogout, setUser } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://sports-edge-backend.vercel.app/api",
-  // baseUrl: "http://localhost:7001/api",
+  // baseUrl: "https://sports-edge-backend.vercel.app/api",
+  baseUrl: "http://localhost:7001/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
@@ -30,8 +30,8 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 401) {
     const res = await fetch(
-      "https://sports-edge-backend.vercel.app/api/auth/refresh-token",
-      // "http://localhost:7001/api/auth/refresh-token",
+      // "https://sports-edge-backend.vercel.app/api/auth/refresh-token",
+      "http://localhost:7001/api/auth/refresh-token",
       {
         method: "POST",
         credentials: "include",
