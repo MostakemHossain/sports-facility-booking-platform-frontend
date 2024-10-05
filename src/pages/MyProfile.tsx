@@ -1,12 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EditOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  FacebookOutlined,
+  LinkedinOutlined,
+  TwitterOutlined,
+  UploadOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import {
   Avatar,
   Button,
-  Card,
   Descriptions,
   Input,
   Modal,
+  Select,
   Skeleton,
   Typography,
   Upload,
@@ -25,6 +32,7 @@ import {
 } from "../redux/features/user/userApi";
 
 const { Title } = Typography;
+const { Option } = Select;
 
 interface UserProfile {
   name: string;
@@ -32,6 +40,7 @@ interface UserProfile {
   phone: string;
   role: "admin" | "user" | "super-admin";
   address: string;
+  gender: string;
   photo: string;
 }
 
@@ -39,6 +48,7 @@ interface FormValues {
   name: string;
   phone: string;
   address: string;
+  gender: string;
 }
 
 const MyProfile = () => {
@@ -48,6 +58,8 @@ const MyProfile = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const { control, handleSubmit, reset } = useForm<FormValues>();
 
@@ -61,6 +73,7 @@ const MyProfile = () => {
     phone: "+1234567890",
     role: "user",
     address: "123 Main St, Anytown, USA",
+    gender: "Male",
     photo: "https://via.placeholder.com/150",
   };
 
@@ -70,7 +83,10 @@ const MyProfile = () => {
       name: userProfile.name,
       phone: userProfile.phone,
       address: userProfile.address,
+      gender: userProfile.gender,
     });
+    setFileList([]);
+    setPreviewImage(userProfile.photo);
   };
 
   const handleCancel = () => {
@@ -86,6 +102,7 @@ const MyProfile = () => {
       formData.append("file", fileList[0].originFileObj as RcFile);
     }
 
+    setLoading(true);
     try {
       const res = await updateMyProfile(formData).unwrap();
       if (res?.success) {
@@ -97,9 +114,10 @@ const MyProfile = () => {
       toast.error(error.data.message, {
         className: "custom-toast",
       });
+    } finally {
+      setLoading(false);
+      setIsModalVisible(false);
     }
-
-    setIsModalVisible(false);
   };
 
   const handleFileChange = ({
@@ -108,66 +126,167 @@ const MyProfile = () => {
     setFileList(fileList);
 
     if (fileList.length > 0) {
-      setUploadedFileName(fileList[0].name);
+      const file = fileList[0];
+      setUploadedFileName(file.name);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPreviewImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file.originFileObj as RcFile);
     } else {
       setUploadedFileName(null);
+      setPreviewImage(null);
+    }
+  };
+
+  const getRoleStyle = (role: string) => {
+    switch (role) {
+      case "admin":
+        return { color: "red", fontWeight: "bold" }; 
+      case "super-admin":
+        return { color: "orange", fontWeight: "bold" }; 
+      case "user":
+        return { color: "green", fontWeight: "bold" }; 
+      default:
+        return {};
     }
   };
 
   return (
     <>
-      <Card
+      <div
         style={{
-          maxWidth: 600,
+          display: "flex",
           margin: "auto",
           padding: "24px",
           borderRadius: "8px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          border: "1px solid #f0f0f0",
           position: "relative",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+          backgroundColor: "#fff",
         }}
       >
-        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+        <div style={{ flex: 1, marginRight: "20px", textAlign: "center" }}>
           <Avatar
-            size={100}
+            size={300}
             src={userProfile.photo}
             icon={<UserOutlined />}
-            style={{ marginBottom: "16px" }}
+            style={{
+              borderRadius: "10%",
+              marginBottom: "16px",
+              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+            }}
           />
-          <Title level={2}>{userProfile.name}</Title>
-          <Typography.Text type="secondary">
-            {userProfile.role.toUpperCase()}
-          </Typography.Text>
+          <Title level={3}>
+            Email: <span className="text-red-500">{userProfile.email}</span>
+          </Title>
+
+          <div style={{ marginTop: "24px" }}>
+            <Button
+              icon={<FacebookOutlined />}
+              style={{
+                backgroundColor: "#4267B2",
+                color: "white",
+                margin: "4px",
+              }}
+            >
+              Facebook
+            </Button>
+            <Button
+              icon={<TwitterOutlined />}
+              style={{
+                backgroundColor: "#1DA1F2",
+                color: "white",
+                margin: "4px",
+              }}
+            >
+              Twitter
+            </Button>
+            <Button
+              icon={<LinkedinOutlined />}
+              style={{
+                backgroundColor: "#0077B5",
+                color: "white",
+                margin: "4px",
+              }}
+            >
+              LinkedIn
+            </Button>
+          </div>
+        </div>
+
+        <div style={{ flex: 2 }}>
+          <Descriptions title="User Information" column={1} bordered>
+            <Descriptions.Item label="Name">
+              <span>{userProfile.name}</span>
+              <Button
+                icon={<EditOutlined />}
+                type="link"
+                onClick={showModal}
+                style={{ padding: 0, marginLeft: "8px" }}
+              />
+            </Descriptions.Item>
+            <Descriptions.Item label="Phone">
+              <span>{userProfile.phone}</span>
+              <Button
+                icon={<EditOutlined />}
+                type="link"
+                onClick={showModal}
+                style={{ padding: 0, marginLeft: "8px" }}
+              />
+            </Descriptions.Item>
+            <Descriptions.Item label="Role">
+              <span style={getRoleStyle(userProfile.role)}>
+                {userProfile.role.toUpperCase()}
+              </span>
+            </Descriptions.Item>
+            <Descriptions.Item label="Gender">
+              <span>{userProfile.gender}</span>
+              <Button
+                icon={<EditOutlined />}
+                type="link"
+                onClick={showModal}
+                style={{ padding: 0, marginLeft: "8px" }}
+              />
+            </Descriptions.Item>
+            <Descriptions.Item label="Address">
+              <span>{userProfile.address}</span>
+              <Button
+                icon={<EditOutlined />}
+                type="link"
+                onClick={showModal}
+                style={{ padding: 0, marginLeft: "8px" }}
+              />
+            </Descriptions.Item>
+          </Descriptions>
         </div>
 
         <Button
           type="primary"
           icon={<EditOutlined />}
-          style={{ position: "absolute", top: 20, right: 20 }}
+          style={{
+            position: "absolute",
+            top: "16px",
+            right: "16px",
+            borderRadius: "50%",
+            width: "50px",
+            height: "50px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
           onClick={showModal}
-        >
-          Edit
-        </Button>
-
-        <Descriptions title="User Information" column={1} bordered>
-          <Descriptions.Item label="Name">{userProfile.name}</Descriptions.Item>
-          <Descriptions.Item label="Email">
-            {userProfile.email}
-          </Descriptions.Item>
-          <Descriptions.Item label="Phone">
-            {userProfile.phone}
-          </Descriptions.Item>
-          <Descriptions.Item label="Role">{userProfile.role}</Descriptions.Item>
-          <Descriptions.Item label="Address">
-            {userProfile.address}
-          </Descriptions.Item>
-        </Descriptions>
-      </Card>
+        />
+      </div>
 
       <Modal
         title="Edit Profile"
         visible={isModalVisible}
         onOk={handleSubmit(onSubmit)}
         onCancel={handleCancel}
+        okText={loading ? "Saving..." : "Save"}
+        cancelText="Cancel"
+        okButtonProps={{ loading }}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
@@ -206,20 +325,41 @@ const MyProfile = () => {
             )}
           />
 
-          <div style={{ marginBottom: "16px" }}>
-            <label>Upload Photo</label>
-            <Upload
-              fileList={fileList}
-              beforeUpload={() => false}
-              onChange={handleFileChange}
-              showUploadList={false}
-            >
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </Upload>
-            {uploadedFileName && (
-              <div style={{ marginTop: "8px" }}>{uploadedFileName}</div>
+          <Controller
+            name="gender"
+            control={control}
+            defaultValue={userProfile.gender}
+            render={({ field }) => (
+              <div style={{ marginBottom: "16px" }}>
+                <label>Gender</label>
+                <Select {...field} placeholder="Select your gender">
+                  <Option value="Male">Male</Option>
+                  <Option value="Female">Female</Option>
+                  <Option value="Other">Other</Option>
+                </Select>
+              </div>
             )}
-          </div>
+          />
+
+          <Upload
+            accept=".png, .jpg, .jpeg"
+            showUploadList={false}
+            beforeUpload={() => false}
+            onChange={handleFileChange}
+          >
+            <Button icon={<UploadOutlined />} style={{ marginBottom: "16px" }}>
+              Upload Profile Picture
+            </Button>
+          </Upload>
+
+          {uploadedFileName && <p>Uploaded: {uploadedFileName}</p>}
+          {previewImage && (
+            <img
+              src={previewImage}
+              alt="Preview"
+              style={{ width: "100%", height: "auto", marginTop: "16px" }}
+            />
+          )}
         </form>
       </Modal>
     </>
