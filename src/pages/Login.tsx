@@ -65,6 +65,7 @@ const Login: React.FC = () => {
       const token = await userInfo.getIdToken();
       const data = {
         email: userInfo.email,
+        name: userInfo.displayName,
         id: token,
         password: userInfo.uid,
       };

@@ -19,11 +19,11 @@ export type TRoute = {
   element: ReactNode;
 };
 
-
 export type User = {
   id: string;
   email: string;
   role: string;
   exp: number;
+  name: string;
   iat: number;
 };

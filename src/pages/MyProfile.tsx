@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EditOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons";
 import {
   Avatar,
