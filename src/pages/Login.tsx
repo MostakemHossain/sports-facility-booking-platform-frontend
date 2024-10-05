@@ -2,6 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInWithPopup } from "firebase/auth";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form"; // Import useForm
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -40,6 +41,9 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [google] = useGoogleMutation();
 
+  // Initialize useForm
+  const { reset } = useForm<LoginFormInputs>();
+
   const onSubmit = async (data: LoginFormInputs) => {
     try {
       const res = await login(data).unwrap();
@@ -74,7 +78,6 @@ const Login: React.FC = () => {
 
       const user = verifyToken(res?.data?.token);
       if (res?.success) {
-        console.log("hello 1");
         dispatch(setUser({ user: user, token: res.data.token }));
         toast.success(res?.message, {
           className: "custom-toast",
@@ -88,10 +91,34 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleDemoUserLogin = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    reset();
+    const demoUserData = {
+      email: import.meta.env.VITE_DUMMY_USER,
+      password: import.meta.env.VITE_DUMMY_PASS,
+    };
+    await onSubmit(demoUserData);
+  };
+
+  const handleDemoAdminLogin = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    reset();
+    const demoAdminData = {
+      email: import.meta.env.VITE_DUMMY_ADMIN,
+      password: import.meta.env.VITE_DUMMY_PASS,
+    };
+    await onSubmit(demoAdminData);
+  };
+
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="flex w-full max-w-4xl shadow-lg">
-        {/* Left Side - Image */}
+       
         <div className="hidden md:block w-1/2">
           <img
             src="https://img.freepik.com/free-vector/sign-concept-illustration_114360-5425.jpg"
@@ -166,6 +193,21 @@ const Login: React.FC = () => {
                   className="w-5 h-5 mr-2"
                 />
                 Sign in with Google
+              </button>
+            </div>
+
+            <div className="flex justify-between mt-4">
+              <button
+                onClick={handleDemoUserLogin}
+                className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-200 mr-2"
+              >
+                Demo User
+              </button>
+              <button
+                onClick={handleDemoAdminLogin}
+                className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition duration-200 ml-2"
+              >
+                Demo Admin
               </button>
             </div>
           </SHForm>
