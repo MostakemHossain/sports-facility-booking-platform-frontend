@@ -1,3 +1,4 @@
+import { Skeleton } from "antd";
 import { FaDollarSign, FaMapMarkerAlt } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetFacilityByIdQuery } from "../../redux/features/admin/facility/facilityApi";
@@ -14,7 +15,11 @@ const FacilityDetails = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        Loading...
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
       </div>
     );
   }
