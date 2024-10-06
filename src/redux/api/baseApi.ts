@@ -66,6 +66,7 @@ export const baseApi = createApi({
     "my-profile",
     "contact",
     "employee",
+    "review",
   ],
   endpoints: () => ({}),
 });

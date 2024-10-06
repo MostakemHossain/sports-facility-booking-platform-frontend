@@ -166,7 +166,7 @@ const Login: React.FC = () => {
               className={`w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200 ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={loading} // Disable button when loading
+              disabled={loading} 
             >
               {loading ? "Signing In..." : "Sign In"}
             </button>
