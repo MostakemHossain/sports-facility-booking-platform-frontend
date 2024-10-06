@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Modal, Rate, Skeleton, Table, Tabs } from "antd";
 import { useState } from "react";
@@ -42,7 +42,7 @@ const Review = () => {
     const newReview = {
       name: user?.name,
       email: user?.email,
-      review: data.review,
+      review: data?.review,
       userId: user?.id,
       rating,
     };
@@ -64,7 +64,9 @@ const Review = () => {
     }
   };
 
-  const handleEdit = (reviewId: string) => {};
+  const handleEdit = (reviewId: string) => {
+    console.log(reviewId);
+  };
 
   const handleDelete = (reviewId: string) => {
     console.log("Deleting review with ID:", reviewId);
@@ -131,7 +133,7 @@ const Review = () => {
     {
       title: "Actions",
       key: "actions",
-      render: (text: any, record: any) => (
+      render: (record: any) => (
         <>
           <Button type="link" onClick={() => handleEdit(record.key)}>
             Edit
@@ -144,8 +146,8 @@ const Review = () => {
     },
   ];
 
-  const tableData = data.data.map((review: any) => ({
-    key: review._id, // Ensure this is correctly mapping the ID
+  const tableData = data?.data?.map((review: any) => ({
+    key: review._id,
     name: review.name,
     email: review.email,
     rating: review.rating,
