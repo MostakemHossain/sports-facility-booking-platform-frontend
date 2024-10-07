@@ -10,8 +10,8 @@ import { setLogout, setUser } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  // baseUrl: "https://sports-edge-backend.vercel.app/api",
-  baseUrl: "http://localhost:7001/api",
+  baseUrl: "https://sports-edge-backend.vercel.app/api",
+  // baseUrl: "http://localhost:7001/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
