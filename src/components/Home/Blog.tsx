@@ -45,28 +45,32 @@ const Blog = () => {
   ];
 
   return (
-    <div className="container mx-auto py-12">
-      <h2 className="text-4xl text-orange-600 font-bold text-center mb-8">
+    <div className="py-12">
+      <h2 className="text-4xl mx-auto text-orange-600 max-w-xl font-bold text-center mb-8">
         Stay Updated with Our Latest Fitness & Sports Articles
       </h2>
-      <p className="text-center text-gray-500 mb-12 max-w-xl mx-auto">
+      <p className="text-center text-gray-400 mb-12 max-w-xl mx-auto">
         Keep up with the latest trends, tips, and insights in sports, fitness,
         and wellness. From expert advice to beginner-friendly guides, we have
         something for everyone.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {blogs.map((blog, index) => (
-          <div key={index} data-aos="fade-up" data-aos-delay={index * 200}>
-            <BlogCard
-              image={blog.image}
-              title={blog.title}
-              date={blog.date}
-              comments={blog.comments}
-              description={blog.description}
-              category={blog.category}
-            />
+      <div>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 ">
+            {blogs.map((blog, index) => (
+              <div key={index} data-aos="fade-up" data-aos-delay={index * 200}>
+                <BlogCard
+                  image={blog.image}
+                  title={blog.title}
+                  date={blog.date}
+                  comments={blog.comments}
+                  description={blog.description}
+                  category={blog.category}
+                />
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-extra-boolean-cast */
 import {
   Button,
   Col,

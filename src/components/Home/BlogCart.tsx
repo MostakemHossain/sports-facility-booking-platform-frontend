@@ -16,7 +16,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   category,
 }) => {
   return (
-    <div className="max-w-sm bg-white rounded-2xl shadow-md overflow-hidden flex flex-col h-full">
+    <div className=" bg-white rounded-2xl shadow-md overflow-hidden flex flex-col h-full">
       <img className="w-full h-48 object-cover" src={image} alt={title} />
       <div className="p-6 flex flex-col flex-grow">
         <div className="bg-orange-500 text-white text-xs font-semibold inline-block py-1 px-4 rounded-full uppercase mb-2">

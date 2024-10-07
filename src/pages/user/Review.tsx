@@ -16,7 +16,6 @@ import {
 } from "../../redux/features/review/review.api";
 import { useAppSelector } from "../../redux/hooks";
 
-
 const reviewSchema = z.object({
   review: z
     .string()
@@ -31,6 +30,7 @@ const reviewSchema = z.object({
 });
 
 const Review = () => {
+  const [activeTab, setActiveTab] = useState("1");
   const [rating, setRating] = useState<number | undefined>(undefined);
   const [ratingInput, setRatingInput] = useState<string | undefined>(undefined);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -45,7 +45,7 @@ const Review = () => {
   const user = useAppSelector(useCurrentUser);
   const [createReview] = useCreateReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();
-  const [updateReview] = useUpdateReviewMutation(); 
+  const [updateReview] = useUpdateReviewMutation();
 
   const { data, isLoading } = useGetMyReviewsByIdQuery(user?.id);
   if (isLoading) {
@@ -58,12 +58,13 @@ const Review = () => {
       email: user?.email,
       review: data?.review,
       userId: user?.id,
-      rating: rating !== undefined ? rating : 0, 
+      rating: rating !== undefined ? rating : 0,
     };
     try {
       const res = await createReview(newReview).unwrap();
       if (res?.success) {
         toast.success(res?.message, { className: "custom-toast" });
+        setActiveTab("2");
       }
     } catch (error: any) {
       toast.error(error.data.message, { className: "custom-toast" });
@@ -76,7 +77,7 @@ const Review = () => {
     if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 5) {
       setRating(numericValue);
     } else {
-      setRating(undefined); 
+      setRating(undefined);
     }
   };
 
@@ -90,7 +91,7 @@ const Review = () => {
       review: reviewText,
       rating: reviewRating,
     });
-    setRating(reviewRating); 
+    setRating(reviewRating);
     setUpdateModalVisible(true);
   };
 
@@ -125,31 +126,30 @@ const Review = () => {
   const handleUpdate = async (data: FieldValues) => {
     if (currentReview) {
       const updatedReview = {
-        id: currentReview.id, 
+        id: currentReview.id,
         review: data.review || currentReview.review,
         rating: rating !== undefined ? rating : currentReview.rating,
       };
-      
+
       try {
         const res = await updateReview(updatedReview).unwrap();
         if (res?.success) {
           toast.success(res?.message, { className: "custom-toast" });
         }
-      
       } catch (error: any) {
         toast.error(error.data.message, { className: "custom-toast" });
       } finally {
         setUpdateModalVisible(false);
-        setCurrentReview(null); 
-        setRating(undefined); 
+        setCurrentReview(null);
+        setRating(undefined);
       }
     }
   };
 
   const cancelUpdate = () => {
     setUpdateModalVisible(false);
-    setCurrentReview(null); 
-    setRating(undefined); 
+    setCurrentReview(null);
+    setRating(undefined);
   };
 
   const columns = [
@@ -217,7 +217,7 @@ const Review = () => {
     <div className="review-section-container">
       <h2 className="text-center text-2xl font-bold mb-6">Reviews</h2>
 
-      <Tabs defaultActiveKey="1">
+      <Tabs activeKey={activeTab} defaultActiveKey="1">
         <Tabs.TabPane tab="Leave a Review" key="1">
           <SHForm onSubmit={onSubmit} resolver={zodResolver(reviewSchema)}>
             <SHInput
@@ -290,7 +290,7 @@ const Review = () => {
       <Modal
         title="Update Review"
         visible={isUpdateModalVisible}
-        footer={null} 
+        footer={null}
         onCancel={cancelUpdate}
       >
         <SHForm onSubmit={handleUpdate} resolver={zodResolver(reviewSchema)}>
@@ -307,7 +307,7 @@ const Review = () => {
               <Rate
                 className="mb-5"
                 allowHalf
-                value={rating} 
+                value={rating}
                 onChange={(value) => {
                   setRating(value);
                   setRatingInput(value?.toString());

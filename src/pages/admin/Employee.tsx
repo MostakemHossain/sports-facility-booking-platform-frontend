@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Space, Typography, Upload } from "antd";
 import "antd/dist/reset.css"; 

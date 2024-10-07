@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Modal, Skeleton, Space, Table } from "antd";
 import React from "react";

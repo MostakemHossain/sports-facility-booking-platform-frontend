@@ -27,33 +27,35 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white border-b border-gray-200 relative">
-      <div className="container mx-auto flex justify-between items-center p-2 text-sm">
-        <div className="flex items-center space-x-2">
-          <span>Follow our social media:</span>
-          <a href="#" aria-label="Facebook">
-            <FaFacebook className="h-5 w-5 text-blue-600" />
-          </a>
-          <a href="#" aria-label="Instagram">
-            <FaInstagram className="h-5 w-5 text-blue-600" />
-          </a>
-          <a href="#" aria-label="Twitter">
-            <FaTwitter className="h-5 w-5 text-blue-600" />
-          </a>
-          <a href="#" aria-label="YouTube">
-            <FaYoutube className="h-5 w-5 text-blue-600" />
-          </a>
-        </div>
-        <div className="md:flex hidden items-center space-x-4">
-          <a
-            href="mailto:support@yourdomain.tld"
-            className="flex items-center space-x-1"
-          >
-            <FaEnvelope className="h-4 w-4 text-blue-600" />
-            <span>sportedge@gmail.com</span>
-          </a>
-          <div className="md:flex hidden items-center space-x-1">
-            <FaMapMarkerAlt className="h-4 w-4 text-blue-600" />
-            <span>Dhaka, Bangladesh</span>
+      <div className="bg-gray-400 font-bold">
+        <div className="container mx-auto flex justify-between  items-center p-2 text-sm">
+          <div className="flex items-center space-x-2 gap-2 md:gap-0">
+            <span className="font-bold">Follow our social media:</span>
+            <a href="#" aria-label="Facebook">
+              <FaFacebook className="h-5 w-5 text-blue-600" />
+            </a>
+            <a href="#" aria-label="Instagram">
+              <FaInstagram className="h-5 w-5 text-blue-600" />
+            </a>
+            <a href="#" aria-label="Twitter">
+              <FaTwitter className="h-5 w-5 text-blue-600" />
+            </a>
+            <a href="#" aria-label="YouTube">
+              <FaYoutube className="h-5 w-5 text-blue-600" />
+            </a>
+          </div>
+          <div className="md:flex hidden items-center space-x-4">
+            <a
+              href="mailto:support@yourdomain.tld"
+              className="flex items-center space-x-1"
+            >
+              <FaEnvelope className="h-4 w-4 text-blue-600" />
+              <span>sportedge@gmail.com</span>
+            </a>
+            <div className="md:flex hidden items-center space-x-1">
+              <FaMapMarkerAlt className="h-4 w-4 text-blue-600" />
+              <span>Dhaka, Bangladesh</span>
+            </div>
           </div>
         </div>
       </div>
@@ -65,7 +67,7 @@ const Navbar = () => {
             isMenuOpen ? "hidden" : "block"
           }`}
         >
-          <span className="text-3xl font-bold text-blue-600">
+          <span className="text-3xl font-bold  text-blue-600">
             <h1>
               Sport <span className="text-orange-600">Ease</span>
             </h1>

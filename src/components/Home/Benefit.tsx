@@ -12,17 +12,17 @@ const Benefit = () => {
   }, []);
 
   return (
-    <section className="py-20 bg-gradient-to-r from-blue-50 to-blue-100">
-      <div className="container mx-auto px-6">
+    <section className="py-10 bg-gradient-to-r from-blue-50 to-blue-100">
+      <div className="container mx-auto px-0 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Text Section */}
           <div className="flex flex-col justify-center" data-aos="fade-right">
-            <h2 className="text-7xl font-bold text-gray-800 mb-8">
+            <h2 className="text-5xl p-2 font-bold text-gray-800 mb-8">
               Get extra <span className="text-[#EA580B]">benefit</span> & the
               <span className="text-[#EA580B]"> best</span> our{" "}
               <span className="text-[#EA580B]">services</span>.
             </h2>
-            <p className="text-lg text-gray-500 mb-8 leading-relaxed">
+            <p className="text-lg p-2 text-gray-500 mb-4 leading-relaxed">
               Elevate your experience with our exclusive perks. Enjoy special
               discounts, priority booking, and round-the-clock support.
               Everything you need for an enhanced experience is just a click
@@ -38,13 +38,13 @@ const Benefit = () => {
           </div>
 
           {/* Benefits Section */}
-          <div className="space-y-8">
+          <div className="space-y-4">
             <div
-              className="bg-white shadow-lg rounded-lg p-8 flex items-start transform transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+              className="bg-white shadow-lg rounded-lg p-4 flex items-start transform transition-transform duration-300 hover:scale-105 hover:shadow-xl"
               data-aos="fade-up"
               data-aos-delay="100"
             >
-              <div className="bg-[#EA580B] text-white p-4 rounded-full">
+              <div className="bg-[#EA580B]  mt-5 text-white p-2 rounded-full">
                 <FaDollarSign className="w-10 h-10" />
               </div>
               <div className="ml-6">
@@ -59,11 +59,11 @@ const Benefit = () => {
             </div>
 
             <div
-              className="bg-white shadow-lg rounded-lg p-8 flex items-start transform transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+              className="bg-white shadow-lg rounded-lg p-4 flex items-start transform transition-transform duration-300 hover:scale-105 hover:shadow-xl"
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              <div className="bg-[#EA580B] text-white p-4 rounded-full">
+              <div className="bg-[#EA580B]  mt-5 text-white p-2 rounded-full">
                 <FaCalendarCheck className="w-10 h-10" />
               </div>
               <div className="ml-6">
@@ -78,11 +78,11 @@ const Benefit = () => {
             </div>
 
             <div
-              className="bg-white shadow-lg rounded-lg p-8 flex items-start transform transition-transform duration-300 hover:scale-110 hover:shadow-xl"
+              className="bg-white shadow-lg rounded-lg p-4 flex items-start justify-center transform transition-transform duration-300 hover:scale-110 hover:shadow-xl"
               data-aos="fade-up"
               data-aos-delay="300"
             >
-              <div className="bg-[#EA580B] text-white p-4 rounded-full">
+              <div className="bg-[#EA580B] mt-5 text-white p-2 rounded-full">
                 <FaHeadset className="w-10 h-10" />
               </div>
               <div className="ml-6">

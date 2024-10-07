@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Modal, Skeleton, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useState } from "react";
