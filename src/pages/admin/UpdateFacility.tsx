@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";

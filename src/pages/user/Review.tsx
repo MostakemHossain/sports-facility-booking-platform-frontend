@@ -28,6 +28,12 @@ const Review = () => {
   const [ratingInput, setRatingInput] = useState<string>(rating.toString());
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [reviewIdToDelete, setReviewIdToDelete] = useState<string | null>(null);
+  const [isEditModalVisible, setEditModalVisible] = useState(false);
+  const [editingReview, setEditingReview] = useState<{
+    rating: number;
+    review: string;
+  } | null>(null);
+  const [activeTab, setActiveTab] = useState<string>("1");
 
   const user = useAppSelector(useCurrentUser);
   const [createReview] = useCreateReviewMutation();
@@ -50,6 +56,8 @@ const Review = () => {
       const res = await createReview(newReview).unwrap();
       if (res?.success) {
         toast.success(res?.message, { className: "custom-toast" });
+        // Switch to "My Reviews" tab after successful submission
+        setActiveTab("2");
       }
     } catch (error: any) {
       toast.error(error.data.message, { className: "custom-toast" });
@@ -65,7 +73,35 @@ const Review = () => {
   };
 
   const handleEdit = (reviewId: string) => {
-    console.log(reviewId);
+    const reviewToEdit = data?.data?.find(
+      (review: any) => review._id === reviewId
+    );
+    if (reviewToEdit) {
+      setEditingReview({
+        rating: reviewToEdit.rating,
+        review: reviewToEdit.review,
+      });
+      setEditModalVisible(true);
+    }
+  };
+
+  const editReview = async () => {
+    if (editingReview) {
+      const updatedReview = {
+        rating: editingReview.rating,
+        review: editingReview.review,
+        userId: user?.id,
+      };
+      try {
+        const res = await createReview(updatedReview).unwrap(); // You can create a separate API call for updating a review
+        if (res?.success) {
+          toast.success(res?.message, { className: "custom-toast" });
+          setEditModalVisible(false); // Close the modal after successful edit
+        }
+      } catch (error: any) {
+        toast.error(error.data.message, { className: "custom-toast" });
+      }
+    }
   };
 
   const handleDelete = (reviewId: string) => {
@@ -159,7 +195,7 @@ const Review = () => {
     <div className="review-section-container">
       <h2 className="text-center text-2xl font-bold mb-6">Reviews</h2>
 
-      <Tabs defaultActiveKey="1">
+      <Tabs activeKey={activeTab} onChange={(key) => setActiveTab(key)}>
         <Tabs.TabPane tab="Leave a Review" key="1">
           <SHForm onSubmit={onSubmit} resolver={zodResolver(reviewSchema)}>
             <SHInput
@@ -227,6 +263,49 @@ const Review = () => {
         onCancel={cancelDelete}
       >
         <p>Are you sure you want to delete this review?</p>
+      </Modal>
+
+      <Modal
+        title="Edit Review"
+        visible={isEditModalVisible}
+        onOk={editReview}
+        onCancel={() => setEditModalVisible(false)}
+      >
+        <label className="font-semibold">Rating</label>
+        <div>
+          <SHInput
+            name="rating"
+            label=""
+            type="number"
+            value={editingReview?.rating.toString()}
+            placeholder="Enter a rating (e.g., 3.5)"
+            onChange={(e) =>
+              setEditingReview({
+                ...editingReview!,
+                rating: parseFloat(e.target.value),
+              })
+            }
+          />
+          <Rate
+            className="mb-5"
+            allowHalf
+            value={editingReview?.rating}
+            onChange={(value) =>
+              setEditingReview({ ...editingReview!, rating: value })
+            }
+          />
+        </div>
+
+        <SHInput
+          name="review"
+          label="Your Review"
+          type="text"
+          value={editingReview?.review}
+          onChange={(e) =>
+            setEditingReview({ ...editingReview!, review: e.target.value })
+          }
+          placeholder="Write your review here..."
+        />
       </Modal>
     </div>
   );

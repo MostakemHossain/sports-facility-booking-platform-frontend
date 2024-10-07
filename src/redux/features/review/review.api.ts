@@ -24,6 +24,14 @@ const createReview = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["review"],
     }),
+    updateReview: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/review/my-reviews/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["review"],
+    }),
   }),
 });
 
@@ -31,4 +39,5 @@ export const {
   useCreateReviewMutation,
   useGetMyReviewsByIdQuery,
   useDeleteReviewMutation,
+  useUpdateReviewMutation,
 } = createReview;
