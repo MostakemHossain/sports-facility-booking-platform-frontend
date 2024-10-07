@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Modal, Rate, Skeleton, Table, Tabs } from "antd";
 import { useState } from "react";
@@ -13,31 +12,40 @@ import {
   useCreateReviewMutation,
   useDeleteReviewMutation,
   useGetMyReviewsByIdQuery,
+  useUpdateReviewMutation,
 } from "../../redux/features/review/review.api";
 import { useAppSelector } from "../../redux/hooks";
+
 
 const reviewSchema = z.object({
   review: z
     .string()
     .min(10, "Review message must be at least 10 characters long.")
-    .max(300, "Review message cannot exceed 300 characters."),
+    .max(300, "Review message cannot exceed 300 characters.")
+    .optional(),
+  rating: z
+    .number()
+    .min(0, "Rating must be at least 0.")
+    .max(5, "Rating cannot exceed 5.")
+    .optional(),
 });
 
 const Review = () => {
-  const [rating, setRating] = useState<number>(5);
-  const [ratingInput, setRatingInput] = useState<string>(rating.toString());
+  const [rating, setRating] = useState<number | undefined>(undefined);
+  const [ratingInput, setRatingInput] = useState<string | undefined>(undefined);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [isUpdateModalVisible, setUpdateModalVisible] = useState(false);
   const [reviewIdToDelete, setReviewIdToDelete] = useState<string | null>(null);
-  const [isEditModalVisible, setEditModalVisible] = useState(false);
-  const [editingReview, setEditingReview] = useState<{
-    rating: number;
+  const [currentReview, setCurrentReview] = useState<{
+    id: string;
     review: string;
+    rating: number;
   } | null>(null);
-  const [activeTab, setActiveTab] = useState<string>("1");
 
   const user = useAppSelector(useCurrentUser);
   const [createReview] = useCreateReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();
+  const [updateReview] = useUpdateReviewMutation(); 
 
   const { data, isLoading } = useGetMyReviewsByIdQuery(user?.id);
   if (isLoading) {
@@ -50,14 +58,12 @@ const Review = () => {
       email: user?.email,
       review: data?.review,
       userId: user?.id,
-      rating,
+      rating: rating !== undefined ? rating : 0, 
     };
     try {
       const res = await createReview(newReview).unwrap();
       if (res?.success) {
         toast.success(res?.message, { className: "custom-toast" });
-        // Switch to "My Reviews" tab after successful submission
-        setActiveTab("2");
       }
     } catch (error: any) {
       toast.error(error.data.message, { className: "custom-toast" });
@@ -69,43 +75,26 @@ const Review = () => {
     const numericValue = parseFloat(value);
     if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 5) {
       setRating(numericValue);
+    } else {
+      setRating(undefined); 
     }
   };
 
-  const handleEdit = (reviewId: string) => {
-    const reviewToEdit = data?.data?.find(
-      (review: any) => review._id === reviewId
-    );
-    if (reviewToEdit) {
-      setEditingReview({
-        rating: reviewToEdit.rating,
-        review: reviewToEdit.review,
-      });
-      setEditModalVisible(true);
-    }
-  };
-
-  const editReview = async () => {
-    if (editingReview) {
-      const updatedReview = {
-        rating: editingReview.rating,
-        review: editingReview.review,
-        userId: user?.id,
-      };
-      try {
-        const res = await createReview(updatedReview).unwrap(); // You can create a separate API call for updating a review
-        if (res?.success) {
-          toast.success(res?.message, { className: "custom-toast" });
-          setEditModalVisible(false); // Close the modal after successful edit
-        }
-      } catch (error: any) {
-        toast.error(error.data.message, { className: "custom-toast" });
-      }
-    }
+  const handleEdit = (
+    reviewId: string,
+    reviewText: string,
+    reviewRating: number
+  ) => {
+    setCurrentReview({
+      id: reviewId,
+      review: reviewText,
+      rating: reviewRating,
+    });
+    setRating(reviewRating); 
+    setUpdateModalVisible(true);
   };
 
   const handleDelete = (reviewId: string) => {
-    console.log("Deleting review with ID:", reviewId);
     setReviewIdToDelete(reviewId);
     setDeleteModalVisible(true);
   };
@@ -131,6 +120,36 @@ const Review = () => {
   const cancelDelete = () => {
     setDeleteModalVisible(false);
     setReviewIdToDelete(null);
+  };
+
+  const handleUpdate = async (data: FieldValues) => {
+    if (currentReview) {
+      const updatedReview = {
+        id: currentReview.id, 
+        review: data.review || currentReview.review,
+        rating: rating !== undefined ? rating : currentReview.rating,
+      };
+      
+      try {
+        const res = await updateReview(updatedReview).unwrap();
+        if (res?.success) {
+          toast.success(res?.message, { className: "custom-toast" });
+        }
+      
+      } catch (error: any) {
+        toast.error(error.data.message, { className: "custom-toast" });
+      } finally {
+        setUpdateModalVisible(false);
+        setCurrentReview(null); 
+        setRating(undefined); 
+      }
+    }
+  };
+
+  const cancelUpdate = () => {
+    setUpdateModalVisible(false);
+    setCurrentReview(null); 
+    setRating(undefined); 
   };
 
   const columns = [
@@ -171,7 +190,10 @@ const Review = () => {
       key: "actions",
       render: (record: any) => (
         <>
-          <Button type="link" onClick={() => handleEdit(record.key)}>
+          <Button
+            type="link"
+            onClick={() => handleEdit(record.key, record.review, record.rating)}
+          >
             Edit
           </Button>
           <Button type="link" danger onClick={() => handleDelete(record.key)}>
@@ -195,7 +217,7 @@ const Review = () => {
     <div className="review-section-container">
       <h2 className="text-center text-2xl font-bold mb-6">Reviews</h2>
 
-      <Tabs activeKey={activeTab} onChange={(key) => setActiveTab(key)}>
+      <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="Leave a Review" key="1">
           <SHForm onSubmit={onSubmit} resolver={zodResolver(reviewSchema)}>
             <SHInput
@@ -232,7 +254,7 @@ const Review = () => {
                   value={rating}
                   onChange={(value) => {
                     setRating(value);
-                    setRatingInput(value.toString());
+                    setRatingInput(value?.toString());
                   }}
                 />
               </div>
@@ -266,46 +288,37 @@ const Review = () => {
       </Modal>
 
       <Modal
-        title="Edit Review"
-        visible={isEditModalVisible}
-        onOk={editReview}
-        onCancel={() => setEditModalVisible(false)}
+        title="Update Review"
+        visible={isUpdateModalVisible}
+        footer={null} 
+        onCancel={cancelUpdate}
       >
-        <label className="font-semibold">Rating</label>
-        <div>
+        <SHForm onSubmit={handleUpdate} resolver={zodResolver(reviewSchema)}>
           <SHInput
-            name="rating"
-            label=""
-            type="number"
-            value={editingReview?.rating.toString()}
-            placeholder="Enter a rating (e.g., 3.5)"
-            onChange={(e) =>
-              setEditingReview({
-                ...editingReview!,
-                rating: parseFloat(e.target.value),
-              })
-            }
+            name="review"
+            label="Your Review"
+            type="text"
+            placeholder="Update your review here..."
+            defaultValue={currentReview?.review}
           />
-          <Rate
-            className="mb-5"
-            allowHalf
-            value={editingReview?.rating}
-            onChange={(value) =>
-              setEditingReview({ ...editingReview!, rating: value })
-            }
-          />
-        </div>
-
-        <SHInput
-          name="review"
-          label="Your Review"
-          type="text"
-          value={editingReview?.review}
-          onChange={(e) =>
-            setEditingReview({ ...editingReview!, review: e.target.value })
-          }
-          placeholder="Write your review here..."
-        />
+          <div className="rating-section">
+            <label className="font-semibold">Rating</label>
+            <div>
+              <Rate
+                className="mb-5"
+                allowHalf
+                value={rating} 
+                onChange={(value) => {
+                  setRating(value);
+                  setRatingInput(value?.toString());
+                }}
+              />
+            </div>
+          </div>
+          <Button type="primary" htmlType="submit">
+            Update Review
+          </Button>
+        </SHForm>
       </Modal>
     </div>
   );

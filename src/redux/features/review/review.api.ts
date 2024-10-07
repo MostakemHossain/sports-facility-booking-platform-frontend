@@ -25,8 +25,8 @@ const createReview = baseApi.injectEndpoints({
       invalidatesTags: ["review"],
     }),
     updateReview: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/review/my-reviews/${id}`,
+      query: (data) => ({
+        url: `/review/my-reviews/${data.id}`,
         method: "PUT",
         body: data,
       }),
