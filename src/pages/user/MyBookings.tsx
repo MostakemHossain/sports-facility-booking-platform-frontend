@@ -1,5 +1,19 @@
-import { Col, Image, Row, Skeleton, Table, Typography, Badge } from "antd";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  Badge,
+  Button,
+  Col,
+  Image,
+  Row,
+  Skeleton,
+  Table,
+  Typography,
+  message,
+} from "antd";
 import { useGetUserBookingQuery } from "../../redux/features/admin/booking/booking.Api";
+import { useCurrentUser } from "../../redux/features/auth/authSlice";
+import { useCreteOrderMutation } from "../../redux/features/order/order.api";
+import { useAppSelector } from "../../redux/hooks";
 
 interface Facility {
   name: string;
@@ -20,10 +34,33 @@ interface Booking {
 }
 
 const MyBookings = () => {
+  const user = useAppSelector(useCurrentUser);
+  const [createOrder] = useCreteOrderMutation();
   const { data, isLoading } = useGetUserBookingQuery("");
 
-  // Calculate the number of bookings
   const bookingsCount = data?.data?.length || 0;
+
+  const handlePayment = async (record: Booking) => {
+    try {
+      const orderData = {
+        user: {
+          email: user?.email,
+          name: user?.name,
+        },
+        productId: record._id,
+        totalPrice: record.payableAmount,
+      };
+
+      const response = await createOrder(orderData).unwrap();
+
+      if (response?.data?.payment_url) {
+        window.location.href = response?.data?.payment_url;
+      }
+    } catch (error) {
+      message.error("Failed to create the order. Please try again.");
+      console.error("Order creation error:", error);
+    }
+  };
 
   const columns = [
     {
@@ -78,6 +115,25 @@ const MyBookings = () => {
         </Typography.Text>
       ),
     },
+    {
+      title: "Payment",
+      dataIndex: "isBooked",
+      render: (_: any, record: Booking) => (
+        <Button
+          type={record.isBooked === "pending" ? "default" : "primary"}
+          disabled={record.isBooked !== "pending"} // Disable button if not pending
+          style={{
+            backgroundColor:
+              record.isBooked === "pending" ? "#f0ad4e" : "#52c41a",
+            borderColor: record.isBooked === "pending" ? "#f0ad4e" : "#52c41a",
+            color: record.isBooked === "pending" ? "#fff" : "",
+          }}
+          onClick={() => record.isBooked === "pending" && handlePayment(record)} // Only call handlePayment if pending
+        >
+          {record.isBooked === "pending" ? "Make Payment" : "Payment Completed"}
+        </Button>
+      ),
+    },
   ];
 
   if (isLoading) {
@@ -91,7 +147,7 @@ const MyBookings = () => {
           <Typography.Title level={4}>My Bookings</Typography.Title>
         </Col>
         <Col>
-          <Badge count={bookingsCount} style={{ backgroundColor: '#52c41a' }}>
+          <Badge count={bookingsCount} style={{ backgroundColor: "#52c41a" }}>
             <Typography.Text>Bookings</Typography.Text>
           </Badge>
         </Col>

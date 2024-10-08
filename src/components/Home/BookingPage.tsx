@@ -70,7 +70,6 @@ const BookingPage = () => {
     try {
       const res = await createBooking(bookingDetails).unwrap();
       if (res?.success) {
-        toast.success(res?.message, { className: "custom-toast" });
         navigate(`/user/my-bookings`);
       }
     } catch (error: any) {
@@ -91,8 +90,7 @@ const BookingPage = () => {
   }
 
   const slotItems = Array.isArray(availableSlots?.data)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ? availableSlots.data.map((slot: any, index: number) => (
+    ? availableSlots?.data?.map((slot: any, index: number) => (
         <li key={index} className="mb-2">
           {slot.startTime} - {slot.endTime}
         </li>

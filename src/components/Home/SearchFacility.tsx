@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-extra-boolean-cast */
 import AOS from "aos";
 import "aos/dist/aos.css";
 import React, { useState } from "react";
@@ -17,7 +19,6 @@ const SearchFacility: React.FC = () => {
   if (!!debouncedTerm) {
     query["searchTerm"] = searchTerm;
   }
-  console.log(searchTerm);
 
   const { data, isLoading } = useGetAllFacilityQuery({ ...query });
 
