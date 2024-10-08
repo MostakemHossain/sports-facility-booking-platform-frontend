@@ -64,7 +64,7 @@ const Review = () => {
       const res = await createReview(newReview).unwrap();
       if (res?.success) {
         toast.success(res?.message, { className: "custom-toast" });
-        setActiveTab("2");
+        setActiveTab("2"); // Switch to "My Reviews" tab after submission
       }
     } catch (error: any) {
       toast.error(error.data.message, { className: "custom-toast" });
@@ -218,7 +218,10 @@ const Review = () => {
       <h2 className="text-center text-2xl font-bold mb-6">Reviews</h2>
 
       <Tabs activeKey={activeTab} defaultActiveKey="1">
-        <Tabs.TabPane tab="Leave a Review" key="1">
+        <Tabs.TabPane
+          tab={<span onClick={() => setActiveTab("1")}>Leave a Review</span>}
+          key="1"
+        >
           <SHForm onSubmit={onSubmit} resolver={zodResolver(reviewSchema)}>
             <SHInput
               name="name"
@@ -273,7 +276,10 @@ const Review = () => {
           </SHForm>
         </Tabs.TabPane>
 
-        <Tabs.TabPane tab="My Reviews" key="2">
+        <Tabs.TabPane
+          tab={<span onClick={() => setActiveTab("2")}>My Reviews</span>}
+          key="2"
+        >
           <Table columns={columns} dataSource={tableData} pagination={false} />
         </Tabs.TabPane>
       </Tabs>
@@ -290,34 +296,30 @@ const Review = () => {
       <Modal
         title="Update Review"
         visible={isUpdateModalVisible}
-        footer={null}
+        onOk={handleUpdate}
         onCancel={cancelUpdate}
       >
-        <SHForm onSubmit={handleUpdate} resolver={zodResolver(reviewSchema)}>
+        <SHForm
+          onSubmit={handleUpdate}
+          resolver={zodResolver(reviewSchema)}
+          defaultValues={{
+            review: currentReview?.review || "",
+            rating: currentReview?.rating || 0,
+          }}
+        >
           <SHInput
             name="review"
             label="Your Review"
             type="text"
-            placeholder="Update your review here..."
-            defaultValue={currentReview?.review}
+            placeholder="Write your review here..."
           />
-          <div className="rating-section">
-            <label className="font-semibold">Rating</label>
-            <div>
-              <Rate
-                className="mb-5"
-                allowHalf
-                value={rating}
-                onChange={(value) => {
-                  setRating(value);
-                  setRatingInput(value?.toString());
-                }}
-              />
-            </div>
-          </div>
-          <Button type="primary" htmlType="submit">
-            Update Review
-          </Button>
+          <Rate
+            allowHalf
+            value={rating}
+            onChange={(value) => {
+              setRating(value);
+            }}
+          />
         </SHForm>
       </Modal>
     </div>
