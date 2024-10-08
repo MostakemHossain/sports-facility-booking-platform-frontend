@@ -1,19 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Badge,
-  Col,
-  Image,
-  Row,
-  Select,
-  Skeleton,
-  Table,
-  Typography,
-} from "antd";
-import { toast } from "sonner";
-import {
-  useGetAllBookingQuery,
-  useUpdateBookingStatusMutation,
-} from "../../redux/features/admin/booking/booking.Api";
+import { Badge, Col, Image, Row, Skeleton, Table, Typography } from "antd";
+import { useGetAllBookingQuery } from "../../redux/features/admin/booking/booking.Api";
 
 interface Facility {
   name: string;
@@ -35,27 +21,8 @@ interface Booking {
 
 const AllBookings = () => {
   const { data, isLoading } = useGetAllBookingQuery("");
-  const [updateBookingStatus] = useUpdateBookingStatusMutation();
 
   const bookingsCount = data?.data?.length || 0;
-
-  const handleStatusChange = async (bookingId: string, newStatus: string) => {
-    try {
-      const res = await updateBookingStatus({
-        id: bookingId,
-        data: { status: newStatus },
-      }).unwrap();
-      if (res?.success) {
-        toast.success(res?.message, {
-          className: "custom-toast",
-        });
-      }
-    } catch (error: any) {
-      toast.error(error.data.message, {
-        className: "custom-toast",
-      });
-    }
-  };
 
   const columns = [
     {
@@ -106,7 +73,7 @@ const AllBookings = () => {
         if (status === "confirmed") {
           color = "success";
         } else if (status === "pending") {
-          color = "danger"; 
+          color = "danger";
         } else {
           color = "warning";
         }
@@ -116,21 +83,6 @@ const AllBookings = () => {
           </Typography.Text>
         );
       },
-    },
-    {
-      title: "Action",
-      render: (record: Booking) => (
-        <Select
-          defaultValue={record.isBooked}
-          style={{ width: 120 }}
-          onChange={(value) => handleStatusChange(record._id, value)}
-          options={[
-            { label: "Confirmed", value: "confirmed" },
-            { label: "Pending", value: "pending" },
-            { label: "Canceled", value: "canceled" },
-          ]}
-        />
-      ),
     },
   ];
 
