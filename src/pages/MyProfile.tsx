@@ -10,9 +10,11 @@ import {
 import {
   Avatar,
   Button,
+  Col,
   Descriptions,
   Input,
   Modal,
+  Row,
   Select,
   Skeleton,
   Typography,
@@ -31,7 +33,7 @@ import {
   useUpdateMyProfileMutation,
 } from "../redux/features/user/userApi";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 const { Option } = Select;
 
 interface UserProfile {
@@ -42,6 +44,7 @@ interface UserProfile {
   address: string;
   gender: string;
   photo: string;
+  bio?: string; // Optional field for additional info
 }
 
 interface FormValues {
@@ -49,6 +52,7 @@ interface FormValues {
   phone: string;
   address: string;
   gender: string;
+  bio?: string; // Optional field for additional info
 }
 
 const MyProfile = () => {
@@ -64,7 +68,7 @@ const MyProfile = () => {
   const { control, handleSubmit, reset } = useForm<FormValues>();
 
   if (isLoading) {
-    return <Skeleton />;
+    return <Skeleton active />;
   }
 
   const userProfile: UserProfile = data?.data || {
@@ -75,6 +79,7 @@ const MyProfile = () => {
     address: "123 Main St, Anytown, USA",
     gender: "Male",
     photo: "https://via.placeholder.com/150",
+    bio: "This is a short bio about John Doe.",
   };
 
   const showModal = () => {
@@ -84,6 +89,7 @@ const MyProfile = () => {
       phone: userProfile.phone,
       address: userProfile.address,
       gender: userProfile.gender,
+      bio: userProfile.bio || "",
     });
     setFileList([]);
     setPreviewImage(userProfile.photo);
@@ -139,144 +145,94 @@ const MyProfile = () => {
     }
   };
 
-  const getRoleStyle = (role: string) => {
-    switch (role) {
-      case "admin":
-        return { color: "red", fontWeight: "bold" }; 
-      case "super-admin":
-        return { color: "orange", fontWeight: "bold" }; 
-      case "user":
-        return { color: "green", fontWeight: "bold" }; 
-      default:
-        return {};
-    }
-  };
-
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          margin: "auto",
-          padding: "24px",
-          borderRadius: "8px",
-          border: "1px solid #f0f0f0",
-          position: "relative",
-          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-          backgroundColor: "#fff",
-        }}
-      >
-        <div style={{ flex: 1, marginRight: "20px", textAlign: "center" }}>
-          <Avatar
-            size={300}
-            src={userProfile.photo}
-            icon={<UserOutlined />}
-            style={{
-              borderRadius: "10%",
-              marginBottom: "16px",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-            }}
-          />
-          <Title level={3}>
-            Email: <span className="text-red-500">{userProfile.email}</span>
-          </Title>
+      <div className=" flex flex-col items-center justify-center bg-gray-100 p-8">
+        <div className="max-w-7xl w-full bg-white rounded-lg shadow-lg p-6 flex">
+          {/* Left Side: Name, Email, Image, and Social Icons */}
+          <div className="flex-none w-1/3 p-4 border-r">
+            <Avatar
+              size={300}
+              src={userProfile?.photo}
+              icon={<UserOutlined />}
+              className="rounded-lg border border-gray-300 shadow-md"
+            />
+            <Title level={3} className="mt-4">
+              {userProfile.name}
+            </Title>
+            <Title level={5} className="text-gray-600 mb-2">
+              Email: <span className="text-red-500">{userProfile.email}</span>
+            </Title>
+            <div className="flex space-x-2 mt-4">
+              <Button
+                icon={<FacebookOutlined />}
+                style={{
+                  backgroundColor: "#4267B2",
+                  color: "white",
+                }}
+              />
+              <Button
+                icon={<TwitterOutlined />}
+                style={{
+                  backgroundColor: "#1DA1F2",
+                  color: "white",
+                }}
+              />
+              <Button
+                icon={<LinkedinOutlined />}
+                style={{
+                  backgroundColor: "#0077B5",
+                  color: "white",
+                }}
+              />
+            </div>
+          </div>
 
-          <div style={{ marginTop: "24px" }}>
-            <Button
-              icon={<FacebookOutlined />}
-              style={{
-                backgroundColor: "#4267B2",
-                color: "white",
-                margin: "4px",
-              }}
+          <div className="flex-1 p-4">
+            <Descriptions
+              title="My Information"
+              column={1}
+              bordered
+              className="mt-6"
             >
-              Facebook
-            </Button>
+              <Descriptions.Item label="Phone">
+                {userProfile.phone}
+              </Descriptions.Item>
+              <Descriptions.Item label="Role">
+                <span
+                  style={{
+                    color:
+                      userProfile.role === "admin"
+                        ? "red"
+                        : userProfile.role === "super-admin"
+                          ? "orange"
+                          : "green",
+                  }}
+                >
+                  {userProfile?.role.toUpperCase()}
+                </span>
+              </Descriptions.Item>
+              <Descriptions.Item label="Gender">
+                {userProfile.gender}
+              </Descriptions.Item>
+              <Descriptions.Item label="Address">
+                {userProfile.address}
+              </Descriptions.Item>
+              <Descriptions.Item label="Bio">
+                <Paragraph>{userProfile.bio}</Paragraph>
+              </Descriptions.Item>
+            </Descriptions>
+
             <Button
-              icon={<TwitterOutlined />}
-              style={{
-                backgroundColor: "#1DA1F2",
-                color: "white",
-                margin: "4px",
-              }}
+              type="primary"
+              icon={<EditOutlined />}
+              className="mt-4"
+              onClick={showModal}
             >
-              Twitter
-            </Button>
-            <Button
-              icon={<LinkedinOutlined />}
-              style={{
-                backgroundColor: "#0077B5",
-                color: "white",
-                margin: "4px",
-              }}
-            >
-              LinkedIn
+              Edit Profile
             </Button>
           </div>
         </div>
-
-        <div style={{ flex: 2 }}>
-          <Descriptions title="User Information" column={1} bordered>
-            <Descriptions.Item label="Name">
-              <span>{userProfile.name}</span>
-              <Button
-                icon={<EditOutlined />}
-                type="link"
-                onClick={showModal}
-                style={{ padding: 0, marginLeft: "8px" }}
-              />
-            </Descriptions.Item>
-            <Descriptions.Item label="Phone">
-              <span>{userProfile.phone}</span>
-              <Button
-                icon={<EditOutlined />}
-                type="link"
-                onClick={showModal}
-                style={{ padding: 0, marginLeft: "8px" }}
-              />
-            </Descriptions.Item>
-            <Descriptions.Item label="Role">
-              <span style={getRoleStyle(userProfile.role)}>
-                {userProfile.role.toUpperCase()}
-              </span>
-            </Descriptions.Item>
-            <Descriptions.Item label="Gender">
-              <span>{userProfile.gender}</span>
-              <Button
-                icon={<EditOutlined />}
-                type="link"
-                onClick={showModal}
-                style={{ padding: 0, marginLeft: "8px" }}
-              />
-            </Descriptions.Item>
-            <Descriptions.Item label="Address">
-              <span>{userProfile.address}</span>
-              <Button
-                icon={<EditOutlined />}
-                type="link"
-                onClick={showModal}
-                style={{ padding: 0, marginLeft: "8px" }}
-              />
-            </Descriptions.Item>
-          </Descriptions>
-        </div>
-
-        <Button
-          type="primary"
-          icon={<EditOutlined />}
-          style={{
-            position: "absolute",
-            top: "16px",
-            right: "16px",
-            borderRadius: "50%",
-            width: "50px",
-            height: "50px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onClick={showModal}
-        />
       </div>
 
       <Modal
@@ -289,77 +245,107 @@ const MyProfile = () => {
         okButtonProps={{ loading }}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Controller
-            name="name"
-            control={control}
-            defaultValue={userProfile.name}
-            render={({ field }) => (
-              <div style={{ marginBottom: "16px" }}>
-                <label>Name</label>
-                <Input {...field} placeholder="Enter your name" />
-              </div>
-            )}
-          />
+          <Row gutter={16}>
+            <Col span={12}>
+              <Controller
+                name="name"
+                control={control}
+                defaultValue={userProfile.name}
+                render={({ field }) => (
+                  <div className="mb-4">
+                    <label className="block">Name</label>
+                    <Input {...field} placeholder="Enter your name" />
+                  </div>
+                )}
+              />
 
-          <Controller
-            name="phone"
-            control={control}
-            defaultValue={userProfile.phone}
-            render={({ field }) => (
-              <div style={{ marginBottom: "16px" }}>
-                <label>Phone</label>
-                <Input {...field} placeholder="Enter your phone number" />
-              </div>
-            )}
-          />
+              <Controller
+                name="phone"
+                control={control}
+                defaultValue={userProfile.phone}
+                render={({ field }) => (
+                  <div className="mb-4">
+                    <label className="block">Phone</label>
+                    <Input {...field} placeholder="Enter your phone number" />
+                  </div>
+                )}
+              />
 
-          <Controller
-            name="address"
-            control={control}
-            defaultValue={userProfile.address}
-            render={({ field }) => (
-              <div style={{ marginBottom: "16px" }}>
-                <label>Address</label>
-                <Input {...field} placeholder="Enter your address" />
-              </div>
-            )}
-          />
+              <Controller
+                name="address"
+                control={control}
+                defaultValue={userProfile.address}
+                render={({ field }) => (
+                  <div className="mb-4">
+                    <label className="block">Address</label>
+                    <Input {...field} placeholder="Enter your address" />
+                  </div>
+                )}
+              />
 
-          <Controller
-            name="gender"
-            control={control}
-            defaultValue={userProfile.gender}
-            render={({ field }) => (
-              <div style={{ marginBottom: "16px" }}>
-                <label>Gender</label>
-                <Select {...field} placeholder="Select your gender">
-                  <Option value="Male">Male</Option>
-                  <Option value="Female">Female</Option>
-                  <Option value="Other">Other</Option>
-                </Select>
-              </div>
-            )}
-          />
+              <Controller
+                name="gender"
+                control={control}
+                defaultValue={userProfile.gender}
+                render={({ field }) => (
+                  <div className="mb-4">
+                    <label className="block">Gender</label>
+                    <Select {...field} placeholder="Select your gender">
+                      <Option value="Male">Male</Option>
+                      <Option value="Female">Female</Option>
+                      <Option value="Other">Other</Option>
+                    </Select>
+                  </div>
+                )}
+              />
 
-          <Upload
-            accept=".png, .jpg, .jpeg"
-            showUploadList={false}
-            beforeUpload={() => false}
-            onChange={handleFileChange}
-          >
-            <Button icon={<UploadOutlined />} style={{ marginBottom: "16px" }}>
-              Upload Profile Picture
-            </Button>
-          </Upload>
+              <Controller
+                name="bio"
+                control={control}
+                defaultValue={userProfile.bio || ""}
+                render={({ field }) => (
+                  <div className="mb-4">
+                    <label className="block">Bio</label>
+                    <Input.TextArea
+                      {...field}
+                      rows={3}
+                      placeholder="Write a short bio"
+                    />
+                  </div>
+                )}
+              />
+            </Col>
 
-          {uploadedFileName && <p>Uploaded: {uploadedFileName}</p>}
-          {previewImage && (
-            <img
-              src={previewImage}
-              alt="Preview"
-              style={{ width: "100%", height: "auto", marginTop: "16px" }}
-            />
-          )}
+            <Col span={12}>
+              <Upload
+                accept=".png, .jpg, .jpeg"
+                showUploadList={false}
+                beforeUpload={() => false}
+                onChange={handleFileChange}
+              >
+                <Button
+                  icon={<UploadOutlined />}
+                  style={{ marginBottom: "16px" }}
+                >
+                  Upload Profile Picture
+                </Button>
+              </Upload>
+
+              {uploadedFileName && <p>Uploaded: {uploadedFileName}</p>}
+              {previewImage && (
+                <img
+                  src={previewImage}
+                  alt="Preview"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    marginTop: "16px",
+                    borderRadius: "8px",
+                  }}
+                />
+              )}
+            </Col>
+          </Row>
         </form>
       </Modal>
     </>
