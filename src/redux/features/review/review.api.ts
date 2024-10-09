@@ -17,6 +17,13 @@ const createReview = baseApi.injectEndpoints({
       }),
       providesTags: ["review"],
     }),
+    getAllReviews: builder.query({
+      query: () => ({
+        url: `/review/reviews/`,
+        method: "GET",
+      }),
+      providesTags: ["review"],
+    }),
     deleteReview: builder.mutation({
       query: (id) => ({
         url: `/review/my-reviews/${id}`,
@@ -40,4 +47,5 @@ export const {
   useGetMyReviewsByIdQuery,
   useDeleteReviewMutation,
   useUpdateReviewMutation,
+  useGetAllReviewsQuery,
 } = createReview;

@@ -8,6 +8,7 @@ import Footer from "../components/Home/Footer";
 import HeroSection from "../components/Home/HeroSection";
 import Navbar from "../components/Home/Navbar";
 import SearchFacility from "../components/Home/SearchFacility";
+import Testimonial from "./Testimonial";
 
 const Home = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -98,11 +99,12 @@ const Home = () => {
         </button>
       )}
 
-      <SearchFacility  />
+      <SearchFacility />
       <Activities />
       <Facilities />
       <Benefit />
       <Blog />
+      <Testimonial />
       <Footer />
     </div>
   );

@@ -39,13 +39,13 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     );
     const data = await res.json();
 
-    if (data.data.token) {
+    if (data?.data?.token) {
       const state = api.getState() as RootState;
       const user = state.auth.user;
       api.dispatch(
         setUser({
           user,
-          token: data.data.token,
+          token: data?.data?.token,
         })
       );
       result = await baseQuery(args, api, extraOptions);

@@ -64,7 +64,7 @@ const Review = () => {
       const res = await createReview(newReview).unwrap();
       if (res?.success) {
         toast.success(res?.message, { className: "custom-toast" });
-        setActiveTab("2"); // Switch to "My Reviews" tab after submission
+        setActiveTab("2"); 
       }
     } catch (error: any) {
       toast.error(error.data.message, { className: "custom-toast" });
