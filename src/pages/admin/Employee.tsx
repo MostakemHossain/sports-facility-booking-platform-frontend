@@ -45,7 +45,9 @@ const EmployeeForm = () => {
 
   return (
     <div style={{ maxWidth: "600px", margin: "auto", padding: "20px" }}>
-      <Title level={3}>Employee Form</Title>
+      <Title style={{
+            color:"#EA580B"
+          }} level={2}>Employee Form</Title>
       <Form onFinish={handleSubmit(onSubmit)} layout="vertical">
         <Form.Item label="Name" name="name">
           <Controller

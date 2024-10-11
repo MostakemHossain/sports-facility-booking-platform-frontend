@@ -15,5 +15,17 @@
 }
 
 
+.ant-menu-item-selected {
+  background-color: #ea580b !important; 
+}
 
 
+.ant-menu-item-selected a {
+  color: white !important; 
+}
+
+
+.ant-menu-item:hover {
+  background-color: #ea580b !important;
+  color: white !important;
+}

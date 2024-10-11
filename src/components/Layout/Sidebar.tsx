@@ -5,11 +5,14 @@ import { useAppSelector } from "../../redux/hooks";
 import { adminPaths } from "../../routes/admin.routes";
 import { userPaths } from "../../routes/user.routes";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
+
 const { Sider } = Layout;
+
 const userRole = {
   ADMIN: "admin",
   USER: "user",
 };
+
 const Sidebar = () => {
   const user = useAppSelector(useCurrentUser);
   const role = user?.role;
@@ -41,19 +44,14 @@ const Sidebar = () => {
         >
           <Link to={"/"}>
             <h1 className="text-2xl">
-              Sport{" "}
-              <span
-                className="text-[#EA580B]"
-              >
-                Ease
-              </span>
+              Sport <span className="text-[#EA580B]">Ease</span>
             </h1>
           </Link>
         </div>
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["4"]}
+          defaultSelectedKeys={["1"]}
           items={sidebarItems}
         />
       </Sider>

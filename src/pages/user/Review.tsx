@@ -215,11 +215,11 @@ const Review = () => {
 
   return (
     <div className="review-section-container">
-      <h2 className="text-center text-2xl font-bold mb-6">Reviews</h2>
+      <h2 className="text-center text-4xl text-orange-600 font-bold mb-6">Reviews</h2>
 
       <Tabs activeKey={activeTab} defaultActiveKey="1">
         <Tabs.TabPane
-          tab={<span onClick={() => setActiveTab("1")}>Leave a Review</span>}
+          tab={<span className="text-orange-600" onClick={() => setActiveTab("1")}>Leave a Review</span>}
           key="1"
         >
           <SHForm onSubmit={onSubmit} resolver={zodResolver(reviewSchema)}>
@@ -270,14 +270,14 @@ const Review = () => {
               placeholder="Write your review here..."
             />
 
-            <Button type="primary" htmlType="submit" className="mt-4">
+            <Button  type="primary" htmlType="submit" className="mt-4 bg-orange-600 hover:bg-orange-700">
               Submit Review
             </Button>
           </SHForm>
         </Tabs.TabPane>
 
         <Tabs.TabPane
-          tab={<span onClick={() => setActiveTab("2")}>My Reviews</span>}
+          tab={<span className="text-orange-600" onClick={() => setActiveTab("2")}>My Reviews</span>}
           key="2"
         >
           <Table columns={columns} dataSource={tableData} pagination={false} />

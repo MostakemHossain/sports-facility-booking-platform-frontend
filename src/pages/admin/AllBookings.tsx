@@ -94,7 +94,9 @@ const AllBookings = () => {
     <div style={{ marginTop: 10 }}>
       <Row justify="space-between" style={{ marginBottom: 16 }}>
         <Col>
-          <Typography.Title level={4}>All Bookings</Typography.Title>
+          <Typography.Title style={{
+            color:"#EA580B"
+          }} level={2}>All Bookings</Typography.Title>
         </Col>
         <Col>
           <Badge count={bookingsCount} style={{ backgroundColor: "#52c41a" }}>

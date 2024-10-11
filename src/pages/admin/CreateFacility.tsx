@@ -50,7 +50,7 @@ const CreateFacility = () => {
 
   return (
     <div className="p-4 max-w-lg mx-auto">
-      <h2 className="text-3xl font-semibold mb-4">Create New Facility</h2>
+      <h2 className="text-3xl font-semibold mb-4 text-orange-600">Create New Facility</h2>
       <SHForm onSubmit={onSubmit} resolver={zodResolver(facilitySchema)}>
         <SHInput
           type="text"

@@ -71,7 +71,7 @@ const AdminDashboard = () => {
               textAlign: "center",
               fontSize: "40px",
               fontWeight: "bold",
-              color: "#1890ff",
+              
             }}
           >
             Welcome, <span className="text-orange-600">{user?.name}!</span>

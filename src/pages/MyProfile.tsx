@@ -61,7 +61,7 @@ const MyProfile = () => {
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [,setUploadedFileName] = useState<string | null>(null);
+  const [, setUploadedFileName] = useState<string | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -148,7 +148,7 @@ const MyProfile = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center bg-gray-100 p-8">
-        <div className="max-w-7xl w-full bg-white rounded-lg shadow-lg md:p-6">
+        <div className="max-w-7xl w-full bg-white rounded-lg shadow-lg md:p-6 p-2">
           <Row gutter={[16, 16]} className="flex flex-col md:flex-row">
             <Col xs={24} md={8} className="flex flex-col items-center">
               <Avatar
@@ -161,7 +161,7 @@ const MyProfile = () => {
                 {userProfile.name}
               </Title>
               <Title level={5} className="text-gray-600 mb-2">
-                Email: <span className="text-red-500">{userProfile.email}</span>
+                Email: <span className="text-orange-600">{userProfile.email}</span>
               </Title>
               <div className="flex space-x-2 mt-4">
                 <Button
@@ -189,7 +189,7 @@ const MyProfile = () => {
             </Col>
 
             <Col xs={24} md={16}>
-              <Descriptions title="My Information" column={1} bordered>
+              <Descriptions  title="My Information" column={1} bordered>
                 <Descriptions.Item label="Phone">
                   {userProfile.phone}
                 </Descriptions.Item>
@@ -223,6 +223,9 @@ const MyProfile = () => {
                 icon={<EditOutlined />}
                 className="mt-4"
                 onClick={showModal}
+                style={{
+                  background: "#EA580B",
+                }}
               >
                 Edit Profile
               </Button>
@@ -287,9 +290,9 @@ const MyProfile = () => {
                   <div className="mb-4">
                     <label className="block">Gender</label>
                     <Select {...field} placeholder="Select your gender">
-                      <Option value="Male">Male</Option>
-                      <Option value="Female">Female</Option>
-                      <Option value="Other">Other</Option>
+                      <Option value="male">Male</Option>
+                      <Option value="female">Female</Option>
+                      <Option value="other">Other</Option>
                     </Select>
                   </div>
                 )}

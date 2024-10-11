@@ -91,6 +91,7 @@ const UserDashboard = () => {
               textAlign: "center",
               fontSize: "40px",
               fontWeight: "bold",
+              
             }}
           >
             Welcome, <span className="text-orange-600">{user?.name}!</span>
