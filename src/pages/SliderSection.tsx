@@ -92,8 +92,8 @@ const SliderSection = () => {
           </Slider>
         </div>
 
-        <div className="w-full lg:w-1/2 space-y-6">
-          <h2 className="text-4xl font-bold mb-4 text-gray-800">
+        <div id="faq" className="w-full lg:w-1/2 space-y-6">
+          <h2 className="text-4xl font-bold mb-4 text-orange-500">
             Frequently Asked Questions
           </h2>
           {faqs.map((faq, index) => (

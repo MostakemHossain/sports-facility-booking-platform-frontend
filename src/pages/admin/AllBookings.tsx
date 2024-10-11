@@ -108,6 +108,7 @@ const AllBookings = () => {
         pagination={{ pageSize: 5 }}
         rowKey="_id"
         bordered
+        scroll={{ x: 768 }}
       />
     </div>
   );

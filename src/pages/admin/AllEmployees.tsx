@@ -60,11 +60,13 @@ const AllEmployees: React.FC = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      render: (text: string) => <strong>{text}</strong>, 
     },
     {
       title: "Designation",
       dataIndex: "designation",
       key: "designation",
+      render: (text: string) => <strong>{text}</strong>, 
     },
     {
       title: "Image",
@@ -156,6 +158,7 @@ const AllEmployees: React.FC = () => {
         dataSource={data?.data}
         rowKey="_id"
         pagination={{ pageSize: 5 }}
+        scroll={{ x: 768 }}
       />
       <Modal
         title="Confirm Delete"

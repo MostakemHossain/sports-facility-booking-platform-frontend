@@ -194,6 +194,7 @@ const Users = () => {
         dataSource={tableData}
         pagination={{ pageSize: 8 }}
         bordered
+        scroll={{ x: 768 }}
       />
       <Modal
         title="Confirm Deletion"

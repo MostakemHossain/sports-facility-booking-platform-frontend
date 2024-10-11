@@ -60,7 +60,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="container mx-auto flex justify-between items-center p-4">
+      <div className="container mx-auto flex justify-between items-center p-3">
         <Link
           to="/"
           className={`flex items-center space-x-2 ${
@@ -103,8 +103,8 @@ const Navbar = () => {
             to="/"
             className={`block md:inline-block font-bold py-2 ${
               isActive("/")
-                ? "text-blue-600"
-                : "text-gray-800 hover:text-blue-600"
+                ? "text-orange-600"
+                : "text-gray-800 hover:text-orange-600"
             }`}
           >
             Home
@@ -113,7 +113,9 @@ const Navbar = () => {
             <Link
               to={`/${user.role}/dashboard`}
               className={`text-gray-800 font-bold flex items-center ${
-                isActive("/dashboard") ? "text-blue-600" : "hover:text-blue-600"
+                isActive("/dashboard")
+                  ? "text-orange-600"
+                  : "hover:text-orange-600"
               }`}
             >
               Dashboard
@@ -123,8 +125,8 @@ const Navbar = () => {
             to="/about"
             className={`block md:inline-block font-bold py-2 ${
               isActive("/about")
-                ? "text-blue-600"
-                : "text-gray-800 hover:text-blue-600"
+                ? "text-orange-600"
+                : "text-gray-800 hover:text-orange-600"
             }`}
           >
             About Us
@@ -134,8 +136,8 @@ const Navbar = () => {
               to="/facilities"
               className={`text-gray-800 font-bold flex items-center ${
                 isActive("/facilities")
-                  ? "text-blue-600"
-                  : "hover:text-blue-600"
+                  ? "text-orange-600"
+                  : "hover:text-orange-600"
               }`}
             >
               Facilities
@@ -145,8 +147,8 @@ const Navbar = () => {
             to="/contact"
             className={`block md:inline-block font-bold py-2 ${
               isActive("/contact")
-                ? "text-blue-600"
-                : "text-gray-800 hover:text-blue-600"
+                ? "text-orange-600"
+                : "text-gray-800 hover:text-orange-600"
             }`}
           >
             Contact Us
@@ -163,7 +165,7 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/login"
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold block text-center"
+                className="bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold block text-center"
               >
                 Login
               </Link>

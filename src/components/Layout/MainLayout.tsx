@@ -33,13 +33,13 @@ const MainLayout = () => {
   );
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ minHeight: "100vh", }}>
       <Sidebar />
       <Layout>
-        <Header style={{ padding: 0, background: "#001529" }}>
+        <Header style={{ padding: 0, background: "#EA580B" }}>
           <div
             className="flex items-center justify-end"
-            style={{ padding: "0 16px", marginTop: "10px" }}
+            style={{ padding: "0 16px", marginTop: "10px", }}
           >
             <Dropdown overlay={menu} placement="bottomRight">
               <Avatar
@@ -56,6 +56,7 @@ const MainLayout = () => {
             style={{
               padding: 24,
               minHeight: 360,
+              
             }}
           >
             <Outlet />

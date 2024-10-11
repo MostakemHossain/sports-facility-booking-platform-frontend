@@ -121,14 +121,14 @@ const MyBookings = () => {
       render: (_: any, record: Booking) => (
         <Button
           type={record.isBooked === "pending" ? "default" : "primary"}
-          disabled={record.isBooked !== "pending"} // Disable button if not pending
+          disabled={record.isBooked !== "pending"} 
           style={{
             backgroundColor:
               record.isBooked === "pending" ? "#f0ad4e" : "#52c41a",
             borderColor: record.isBooked === "pending" ? "#f0ad4e" : "#52c41a",
             color: record.isBooked === "pending" ? "#fff" : "",
           }}
-          onClick={() => record.isBooked === "pending" && handlePayment(record)} // Only call handlePayment if pending
+          onClick={() => record.isBooked === "pending" && handlePayment(record)} // 
         >
           {record.isBooked === "pending" ? "Make Payment" : "Payment Completed"}
         </Button>
@@ -143,10 +143,10 @@ const MyBookings = () => {
   return (
     <div style={{ marginTop: 10 }}>
       <Row justify="space-between" style={{ marginBottom: 16 }}>
-        <Col>
+        <Col xs={24} md={12}>
           <Typography.Title level={4}>My Bookings</Typography.Title>
         </Col>
-        <Col>
+        <Col xs={24} md={12} style={{ textAlign: "right" }}>
           <Badge count={bookingsCount} style={{ backgroundColor: "#52c41a" }}>
             <Typography.Text>Bookings</Typography.Text>
           </Badge>
@@ -158,6 +158,7 @@ const MyBookings = () => {
         pagination={{ pageSize: 5 }}
         rowKey="_id"
         bordered
+        scroll={{ x: 768 }} 
       />
     </div>
   );

@@ -13,7 +13,7 @@ const Testimonial = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-12">
-      <h2 className="text-3xl font-bold text-center mb-2">
+      <h2 className="text-4xl text-[#EA580B] font-bold text-center mb-2">
         What Our Clients Say
       </h2>
       <p className="text-center text-lg text-gray-600 mb-6">
@@ -23,7 +23,7 @@ const Testimonial = () => {
       <Carousel autoplay dots={true} effect="scrollx">
         {reviews.map((review: any, index: number) => (
           <div key={index} className="flex justify-center">
-            <div className="bg-gradient-to-r from-blue-400 to-purple-500 text-white rounded-lg shadow-lg p-6 flex flex-col items-center">
+            <div className="bg-gradient-to-r from-orange-400 to-purple-600 text-white rounded-lg shadow-lg p-6 flex flex-col items-center">
               <Avatar
                 size={80}
                 src={review?.userId?.photo}

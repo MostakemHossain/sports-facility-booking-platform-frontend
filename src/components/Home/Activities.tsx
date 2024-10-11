@@ -52,28 +52,37 @@ const activities = [
 const Activities = () => {
   return (
     <div className="py-12 bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        {/* Title and Subtitle */}
+        <h2 className="text-4xl font-bold text-orange-600 mb-4">
+          Explore Our Activities
+        </h2>
+        <p className="text-lg text-gray-600 mb-10">
+          Discover a variety of engaging activities designed to enhance your
+          fitness and well-being.
+        </p>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {activities.map((activity, index) => (
             <div
               key={index}
               className={`flex flex-col items-center p-6 bg-white shadow-lg rounded-lg text-center transition-transform transform hover:scale-105 ${
                 index === 1 || index === 6
-                  ? "bg-gradient-to-r from-blue-500 to-blue-700 text-white"
+                  ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white"
                   : ""
               }`}
             >
               <div className="text-6xl mb-4">{activity.icon}</div>
               <h3
                 className={`text-2xl font-semibold ${
-                    index === 1 || index === 6? "text-white" : "text-gray-900"
+                  index === 1 || index === 6 ? "text-white" : "text-gray-900"
                 }`}
               >
                 {activity.title}
               </h3>
               <p
                 className={`mt-3 text-lg ${
-                    index === 1 || index === 6? "text-white" : "text-gray-600"
+                  index === 1 || index === 6 ? "text-white" : "text-gray-600"
                 }`}
               >
                 {activity.description}
@@ -87,3 +96,5 @@ const Activities = () => {
 };
 
 export default Activities;
+
+

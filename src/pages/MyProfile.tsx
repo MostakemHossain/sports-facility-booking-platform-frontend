@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   EditOutlined,
@@ -44,7 +45,7 @@ interface UserProfile {
   address: string;
   gender: string;
   photo: string;
-  bio?: string; // Optional field for additional info
+  bio?: string;
 }
 
 interface FormValues {
@@ -52,7 +53,7 @@ interface FormValues {
   phone: string;
   address: string;
   gender: string;
-  bio?: string; // Optional field for additional info
+  bio?: string;
 }
 
 const MyProfile = () => {
@@ -147,91 +148,88 @@ const MyProfile = () => {
 
   return (
     <>
-      <div className=" flex flex-col items-center justify-center bg-gray-100 p-8">
-        <div className="max-w-7xl w-full bg-white rounded-lg shadow-lg p-6 flex">
-          {/* Left Side: Name, Email, Image, and Social Icons */}
-          <div className="flex-none w-1/3 p-4 border-r">
-            <Avatar
-              size={300}
-              src={userProfile?.photo}
-              icon={<UserOutlined />}
-              className="rounded-lg border border-gray-300 shadow-md"
-            />
-            <Title level={3} className="mt-4">
-              {userProfile.name}
-            </Title>
-            <Title level={5} className="text-gray-600 mb-2">
-              Email: <span className="text-red-500">{userProfile.email}</span>
-            </Title>
-            <div className="flex space-x-2 mt-4">
-              <Button
-                icon={<FacebookOutlined />}
-                style={{
-                  backgroundColor: "#4267B2",
-                  color: "white",
-                }}
+      <div className="flex flex-col items-center justify-center bg-gray-100 p-8">
+        <div className="max-w-7xl w-full bg-white rounded-lg shadow-lg md:p-6">
+          <Row gutter={[16, 16]} className="flex flex-col md:flex-row">
+           
+            <Col xs={24} md={8} className="flex flex-col items-center">
+              <Avatar
+                size={350}
+                src={userProfile?.photo}
+                icon={<UserOutlined />}
+                className="rounded-lg border border-gray-300 shadow-md"
               />
-              <Button
-                icon={<TwitterOutlined />}
-                style={{
-                  backgroundColor: "#1DA1F2",
-                  color: "white",
-                }}
-              />
-              <Button
-                icon={<LinkedinOutlined />}
-                style={{
-                  backgroundColor: "#0077B5",
-                  color: "white",
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="flex-1 p-4">
-            <Descriptions
-              title="My Information"
-              column={1}
-              bordered
-              className="mt-6"
-            >
-              <Descriptions.Item label="Phone">
-                {userProfile.phone}
-              </Descriptions.Item>
-              <Descriptions.Item label="Role">
-                <span
+              <Title level={4} className="mt-4">
+                {userProfile.name}
+              </Title>
+              <Title level={5} className="text-gray-600 mb-2">
+                Email: <span className="text-red-500">{userProfile.email}</span>
+              </Title>
+              <div className="flex space-x-2 mt-4">
+                <Button
+                  icon={<FacebookOutlined />}
                   style={{
-                    color:
-                      userProfile.role === "admin"
-                        ? "red"
-                        : userProfile.role === "super-admin"
-                          ? "orange"
-                          : "green",
+                    backgroundColor: "#4267B2",
+                    color: "white",
                   }}
-                >
-                  {userProfile?.role.toUpperCase()}
-                </span>
-              </Descriptions.Item>
-              <Descriptions.Item label="Gender">
-                {userProfile.gender}
-              </Descriptions.Item>
-              <Descriptions.Item label="Address">
-                {userProfile.address}
-              </Descriptions.Item>
-              <Descriptions.Item label="Bio">
-                <Paragraph>{userProfile.bio}</Paragraph>
-              </Descriptions.Item>
-            </Descriptions>
+                />
+                <Button
+                  icon={<TwitterOutlined />}
+                  style={{
+                    backgroundColor: "#1DA1F2",
+                    color: "white",
+                  }}
+                />
+                <Button
+                  icon={<LinkedinOutlined />}
+                  style={{
+                    backgroundColor: "#0077B5",
+                    color: "white",
+                  }}
+                />
+              </div>
+            </Col>
 
-            <Button
-              type="primary"
-              icon={<EditOutlined />}
-              className="mt-4"
-              onClick={showModal}
-            >
-              Edit Profile
-            </Button>
-          </div>
+            <Col xs={24} md={16}>
+              <Descriptions title="My Information" column={1} bordered>
+                <Descriptions.Item label="Phone">
+                  {userProfile.phone}
+                </Descriptions.Item>
+                <Descriptions.Item label="Role">
+                  <span
+                    style={{
+                      color:
+                        userProfile.role === "admin"
+                          ? "red"
+                          : userProfile.role === "super-admin"
+                            ? "orange"
+                            : "green",
+                    }}
+                  >
+                    {userProfile?.role.toUpperCase()}
+                  </span>
+                </Descriptions.Item>
+                <Descriptions.Item label="Gender">
+                  {userProfile.gender}
+                </Descriptions.Item>
+                <Descriptions.Item label="Address">
+                  {userProfile.address}
+                </Descriptions.Item>
+                <Descriptions.Item label="Bio">
+                  <Paragraph>{userProfile.bio}</Paragraph>
+                </Descriptions.Item>
+              </Descriptions>
+
+              <Button
+                type="primary"
+                icon={<EditOutlined />}
+                className="mt-4"
+                onClick={showModal}
+              >
+                Edit Profile
+              </Button>
+            </Col>
+          </Row>
         </div>
       </div>
 
@@ -246,7 +244,7 @@ const MyProfile = () => {
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <Row gutter={16}>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Controller
                 name="name"
                 control={control}
@@ -308,42 +306,39 @@ const MyProfile = () => {
                     <label className="block">Bio</label>
                     <Input.TextArea
                       {...field}
+                      placeholder="Enter your bio"
                       rows={3}
-                      placeholder="Write a short bio"
                     />
                   </div>
                 )}
               />
             </Col>
 
-            <Col span={12}>
-              <Upload
-                accept=".png, .jpg, .jpeg"
-                showUploadList={false}
-                beforeUpload={() => false}
-                onChange={handleFileChange}
-              >
-                <Button
-                  icon={<UploadOutlined />}
-                  style={{ marginBottom: "16px" }}
+            <Col xs={24} sm={12}>
+              <div className="mb-4">
+                <label className="block mb-2">Upload Profile Picture</label>
+                <Upload
+                  fileList={fileList}
+                  listType="picture-card"
+                  beforeUpload={() => false}
+                  onChange={handleFileChange}
+                  accept="image/*"
+                  showUploadList={false}
                 >
-                  Upload Profile Picture
-                </Button>
-              </Upload>
-
-              {uploadedFileName && <p>Uploaded: {uploadedFileName}</p>}
-              {previewImage && (
-                <img
-                  src={previewImage}
-                  alt="Preview"
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    marginTop: "16px",
-                    borderRadius: "8px",
-                  }}
-                />
-              )}
+                  {previewImage ? (
+                    <img
+                      src={previewImage}
+                      alt="avatar"
+                      style={{ width: "100%" }}
+                    />
+                  ) : (
+                    <div>
+                      <UploadOutlined />
+                      <div style={{ marginTop: 8 }}>Upload</div>
+                    </div>
+                  )}
+                </Upload>
+              </div>
             </Col>
           </Row>
         </form>

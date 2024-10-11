@@ -12,7 +12,7 @@ const TrainingSection = () => {
 
         <div className="w-full lg:w-1/2 space-y-8">
           <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-            <h3 className="text-2xl font-semibold mb-2 flex items-center">
+            <h3 className="text-2xl text-orange-600 font-semibold mb-2 flex items-center">
               <span className="text-red-500 mr-3">🏋️‍♂️</span> Strength/Free
               Weights
             </h3>
@@ -22,7 +22,7 @@ const TrainingSection = () => {
             </p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-            <h3 className="text-2xl font-semibold mb-2 flex items-center">
+            <h3 className="text-2xl text-orange-600  font-semibold mb-2 flex items-center">
               <span className="text-red-500 mr-3">🏋️‍♂️</span> Personal Training
               Services
             </h3>
@@ -32,7 +32,7 @@ const TrainingSection = () => {
             </p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-            <h3 className="text-2xl font-semibold mb-2 flex items-center">
+            <h3 className="text-2xl text-orange-600  font-semibold mb-2 flex items-center">
               <span className="text-red-500 mr-3">🏃‍♂️</span> Cardio Workouts
             </h3>
             <p className="text-gray-700">

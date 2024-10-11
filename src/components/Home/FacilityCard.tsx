@@ -53,7 +53,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({ facility }) => {
           </div>
         </div>
         <button
-          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-200 focus:ring-2 focus:ring-blue-400"
+          className="w-full bg-[#EA580B] text-white py-2 rounded-md hover:bg-[#f05401] transition-colors duration-200 focus:ring-2 focus:ring-blue-400"
           onClick={handleViewDetails}
         >
           View Details

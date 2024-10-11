@@ -20,7 +20,7 @@ const TeamCard: React.FC<MemberProps> = ({ member }) => {
         <img
           src={member?.image}
           alt={member?.name}
-          className="w-full h-[50%] mx-auto object-cover  transform transition-transform duration-300 group-hover:rotate-3"
+          className="w-full h-48 mx-auto object-cover transform transition-transform duration-300 group-hover:rotate-3" // Fixed height
         />
 
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center space-x-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

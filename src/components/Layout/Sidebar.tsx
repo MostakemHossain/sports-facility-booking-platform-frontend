@@ -43,9 +43,7 @@ const Sidebar = () => {
             <h1 className="text-2xl">
               Sport{" "}
               <span
-                style={{
-                  color: "orange",
-                }}
+                className="text-[#EA580B]"
               >
                 Ease
               </span>

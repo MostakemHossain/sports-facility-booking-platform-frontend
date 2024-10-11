@@ -181,22 +181,26 @@ const Facility = () => {
   return (
     <div style={{ marginTop: 10 }}>
       <Row justify="end" style={{ marginBottom: 16 }}>
-        <Col>
+        <Col xs={24} sm={12} md={8} lg={6}>
           <Search
             placeholder="Search by name, location, or price"
             allowClear
             onSearch={handleSearch}
             onChange={(e) => setsearchTerm(e.target.value)}
-            style={{ width: 300 }}
+            style={{ width: "100%" }}
           />
         </Col>
       </Row>
-      <Table
-        columns={columns}
-        dataSource={tableData}
-        pagination={{ pageSize: 5 }}
-        bordered
-      />
+      <div style={{ overflowX: "auto" }}>
+        {" "}
+        <Table
+          columns={columns}
+          dataSource={tableData}
+          pagination={{ pageSize: 5 }}
+          bordered
+          scroll={{ x: 768 }}
+        />
+      </div>
 
       <Modal visible={isModalVisible} onCancel={handleModalClose} footer={null}>
         <UpdateFacility id={selectedFacilityId} onClose={handleModalClose} />

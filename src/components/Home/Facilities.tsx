@@ -52,7 +52,7 @@ const Facilities: React.FC = () => {
       <div className="text-center mt-12">
         <Link
           to="/facilities"
-          className="bg-[#EA580B] text-white py-3 px-6 rounded-md hover:bg-blue-600 transition-colors duration-300"
+          className="bg-[#EA580B] text-white py-3 px-6 rounded-md hover:bg-orange-500 transition-colors duration-300"
         >
           View All Facilities
         </Link>

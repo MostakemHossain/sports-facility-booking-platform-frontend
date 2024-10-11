@@ -93,7 +93,7 @@ const UserDashboard = () => {
               fontWeight: "bold",
             }}
           >
-            Welcome, <span className="text-red-600">{user?.name}!</span>
+            Welcome, <span className="text-orange-600">{user?.name}!</span>
           </h2>
           <p style={{ textAlign: "center", fontSize: "16px" }}>
             Here's a quick overview of your activity on the sports facility

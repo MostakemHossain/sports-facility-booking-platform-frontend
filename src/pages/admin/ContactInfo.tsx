@@ -92,7 +92,8 @@ const ContactInfo = () => {
         dataSource={data?.data || []}
         columns={columns}
         rowKey="_id"
-        pagination={{ pageSize: 5 }}
+        pagination={{ pageSize: 10 }}
+        scroll={{ x: 768 }}
       />
       <Modal
         title="Confirm Deletion"

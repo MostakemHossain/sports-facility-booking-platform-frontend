@@ -5,13 +5,13 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <footer className="bg-[#071224] text-white py-10">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Left Section */}
           <div>
             <h2 className="text-3xl font-bold">
               Sport <span className="text-orange-600">Ease</span>
@@ -38,24 +38,23 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Center Section */}
           <div>
             <h3 className="text-xl font-bold">Company</h3>
             <ul className="mt-4 space-y-2 text-gray-400">
               <li>
-                <a href="#" className="hover:text-gray-200">
+                <Link to="/about" className="hover:text-gray-200">
                   About us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-200">
-                  Leadership
-                </a>
+                <Link to="facilities" className="hover:text-gray-200">
+                  Facility
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-200">
-                  Careers
-                </a>
+                <Link to="contact" className="hover:text-gray-200">
+                  Contact
+                </Link>
               </li>
               <li>
                 <a href="#" className="hover:text-gray-200">
@@ -122,7 +121,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-200">
+                <a href="#faq" className="hover:text-gray-200">
                   FAQ
                 </a>
               </li>

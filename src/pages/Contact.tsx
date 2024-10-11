@@ -31,7 +31,7 @@ const ContactUs = () => {
     <>
       <Navbar />
       <div className="bg-gray-100">
-        {/* Hero Section */}
+       
         <div className="relative">
           <img
             src="https://pikwizard.com/pw/medium/eb395e8733382b36a485555e49d0aa23.jpg"
@@ -40,7 +40,7 @@ const ContactUs = () => {
             style={{ height: "400px", objectFit: "cover" }}
           />
           <div className="absolute inset-0 bg-blue-600 bg-opacity-70 flex flex-col items-center justify-center text-center px-4">
-            <h1 className="text-white text-2xl md:text-4xl font-bold">
+            <h1 className="text-orange-500 text-2xl md:text-4xl font-bold">
               Contact Us
             </h1>
             <p className="text-white text-base md:text-xl mt-2">
@@ -49,10 +49,10 @@ const ContactUs = () => {
           </div>
         </div>
 
-        {/* Main Contact Section */}
+      
         <div className="max-w-7xl mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <h2 className="text-4xl font-bold mb-4">Our Facilities</h2>
+            <h2 className="text-5xl text-orange-600 font-bold mb-4">Our Facilities</h2>
             <p className="text-gray-600 mb-8">
               Whether you're looking to book a tennis court, soccer field, or
               swimming lane, our state-of-the-art facilities are here to meet
@@ -60,9 +60,9 @@ const ContactUs = () => {
               memberships, facility rentals, and special events.
             </p>
             <div className="space-y-6">
-              {/* Our Location */}
+              
               <div className="flex items-start space-x-4">
-                <div className="bg-blue-600 text-white p-3 rounded-lg">
+                <div className="bg-orange-600 text-white p-3 rounded-lg">
                   <FaMapMarkerAlt className="h-6 w-6" />
                 </div>
                 <div>
@@ -72,9 +72,9 @@ const ContactUs = () => {
                   </p>
                 </div>
               </div>
-              {/* Email Us */}
+              
               <div className="flex items-start space-x-4">
-                <div className="bg-blue-600 text-white p-3 rounded-lg">
+                <div className="bg-orange-600 text-white p-3 rounded-lg">
                   <FaEnvelope className="h-6 w-6" />
                 </div>
                 <div>
@@ -83,9 +83,9 @@ const ContactUs = () => {
                   <p className="text-gray-600">support@sportsfacility.com</p>
                 </div>
               </div>
-              {/* Call Us */}
+              
               <div className="flex items-start space-x-4">
-                <div className="bg-blue-600 text-white p-3 rounded-lg">
+                <div className="bg-orange-600 text-white p-3 rounded-lg">
                   <FaPhoneAlt className="h-6 w-6" />
                 </div>
                 <div>
@@ -94,9 +94,9 @@ const ContactUs = () => {
                   <p className="text-gray-600">Fax: +880 (555) 765-4321</p>
                 </div>
               </div>
-              {/* Headquarters Email */}
+             
               <div className="flex items-start space-x-4">
-                <div className="bg-blue-600 text-white p-3 rounded-lg">
+                <div className="bg-orange-600 text-white p-3 rounded-lg">
                   <FaEnvelope className="h-6 w-6" />
                 </div>
                 <div>
@@ -107,9 +107,9 @@ const ContactUs = () => {
             </div>
           </div>
 
-          {/* Send a Message Section */}
+         
           <div>
-            <h2 className="text-4xl font-bold mb-4">Send Us a Message</h2>
+            <h2 className="text-5xl text-orange-600 font-bold mb-4">Send Us a Message</h2>
             <p className="text-gray-500 mb-8">
               Have questions about our facilities, membership options, or
               upcoming events? Fill out the form below, and our team will get
@@ -121,31 +121,31 @@ const ContactUs = () => {
                   type="text"
                   placeholder="Name"
                   {...register("name")}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
 
                 <input
                   type="email"
                   placeholder="Email Address"
                   {...register("email")}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
                 <input
                   type="tel"
                   placeholder="Phone Number"
                   {...register("phone")}
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
 
               <textarea
                 placeholder="Message"
                 {...register("message")}
-                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
               ></textarea>
               <button
                 type="submit"
-                className="w-full p-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+                className="w-full p-3 bg-orange-600 text-white font-semibold rounded-md hover:bg-orange-700 transition"
               >
                 Send Message
               </button>
@@ -154,7 +154,7 @@ const ContactUs = () => {
         </div>
 
         <div className=" mx-auto px-4 py-16">
-          <h2 className="text-4xl font-bold mb-6 text-center">
+          <h2 className="text-5xl text-orange-600 font-bold mb-6 text-center">
             Find Us on the Map
           </h2>
           <div className="w-full h-64">
