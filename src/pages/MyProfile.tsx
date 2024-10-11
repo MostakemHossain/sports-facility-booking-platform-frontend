@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   EditOutlined,
@@ -62,7 +61,7 @@ const MyProfile = () => {
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const [,setUploadedFileName] = useState<string | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -151,7 +150,6 @@ const MyProfile = () => {
       <div className="flex flex-col items-center justify-center bg-gray-100 p-8">
         <div className="max-w-7xl w-full bg-white rounded-lg shadow-lg md:p-6">
           <Row gutter={[16, 16]} className="flex flex-col md:flex-row">
-           
             <Col xs={24} md={8} className="flex flex-col items-center">
               <Avatar
                 size={350}
