@@ -1,13 +1,13 @@
 /* eslint-disable no-extra-boolean-cast */
-import { Input, Skeleton } from "antd";
+import { Flex, Input, Skeleton, Spin } from "antd";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import React, { useEffect, useState } from "react";
 import { useGetAllFacilityQuery } from "../../redux/features/admin/facility/facilityApi";
 import { useDebounced } from "../../redux/hooks";
 import FacilityCard from "./FacilityCard";
-import Navbar from "./Navbar";
 import Footer from "./Footer";
+import Navbar from "./Navbar";
 
 export interface Facility {
   _id: string;
@@ -68,16 +68,12 @@ const Facility: React.FC = () => {
             />
           </div>
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, index) => (
-                <div
-                  key={index}
-                  className="bg-white p-4 rounded-lg shadow-lg"
-                  data-aos="fade-up"
-                >
-                  <Skeleton active />
-                </div>
-              ))}
+            <div className="flex justify-center items-center">
+              <div>
+                <Flex align="center" gap="middle">
+                  <Spin size="large" />
+                </Flex>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

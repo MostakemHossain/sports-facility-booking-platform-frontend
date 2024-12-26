@@ -148,20 +148,21 @@ const MyProfile = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center bg-gray-100 p-8">
-        <div className="max-w-7xl w-full bg-white rounded-lg shadow-lg md:p-6 p-2">
-          <Row gutter={[16, 16]} className="flex flex-col md:flex-row">
+        <div className="max-w-7xl  w-full bg-white rounded-lg shadow-lg md:p-6 p-2">
+          <Row gutter={[16, 16]} className="flex flex-col  md:flex-row">
             <Col xs={24} md={8} className="flex flex-col items-center">
               <Avatar
-                size={350}
+                size={300}
                 src={userProfile?.photo}
                 icon={<UserOutlined />}
                 className="rounded-lg border border-gray-300 shadow-md"
               />
               <Title level={4} className="mt-4">
-                {userProfile.name}
+                {userProfile?.name}
               </Title>
               <Title level={5} className="text-gray-600 mb-2">
-                Email: <span className="text-orange-600">{userProfile.email}</span>
+                Email:{" "}
+                <span className="text-orange-600">{userProfile?.email}</span>
               </Title>
               <div className="flex space-x-2 mt-4">
                 <Button
@@ -188,48 +189,50 @@ const MyProfile = () => {
               </div>
             </Col>
 
-            <Col xs={24} md={16}>
-              <Descriptions  title="My Information" column={1} bordered>
-                <Descriptions.Item label="Phone">
-                  {userProfile.phone}
-                </Descriptions.Item>
-                <Descriptions.Item label="Role">
-                  <span
-                    style={{
-                      color:
-                        userProfile.role === "admin"
-                          ? "red"
-                          : userProfile.role === "super-admin"
+            <>
+              <Col xs={24} md={16}>
+                <Descriptions title="My Information" column={1} bordered>
+                  <Descriptions.Item label="Phone">
+                    {userProfile?.phone}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Role">
+                    <span
+                      style={{
+                        color:
+                          userProfile?.role === "admin"
+                            ? "red"
+                            : userProfile?.role === "super-admin"
                             ? "orange"
                             : "green",
-                    }}
-                  >
-                    {userProfile?.role.toUpperCase()}
-                  </span>
-                </Descriptions.Item>
-                <Descriptions.Item label="Gender">
-                  {userProfile.gender}
-                </Descriptions.Item>
-                <Descriptions.Item label="Address">
-                  {userProfile.address}
-                </Descriptions.Item>
-                <Descriptions.Item label="Bio">
-                  <Paragraph>{userProfile.bio}</Paragraph>
-                </Descriptions.Item>
-              </Descriptions>
+                      }}
+                    >
+                      {userProfile?.role.toUpperCase()}
+                    </span>
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Gender">
+                    {userProfile?.gender}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Address">
+                    {userProfile?.address}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Bio">
+                    <Paragraph>{userProfile?.bio}</Paragraph>
+                  </Descriptions.Item>
+                </Descriptions>
 
-              <Button
-                type="primary"
-                icon={<EditOutlined />}
-                className="mt-4"
-                onClick={showModal}
-                style={{
-                  background: "#EA580B",
-                }}
-              >
-                Edit Profile
-              </Button>
-            </Col>
+                <Button
+                  type="primary"
+                  icon={<EditOutlined />}
+                  className="mt-4"
+                  onClick={showModal}
+                  style={{
+                    background: "#EA580B",
+                  }}
+                >
+                  Edit Profile
+                </Button>
+              </Col>
+            </>
           </Row>
         </div>
       </div>

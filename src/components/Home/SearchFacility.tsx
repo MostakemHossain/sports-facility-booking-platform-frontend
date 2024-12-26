@@ -8,6 +8,7 @@ import Typewriter from "typewriter-effect";
 import { useGetAllFacilityQuery } from "../../redux/features/admin/facility/facilityApi";
 import { useDebounced } from "../../redux/hooks";
 import FacilityCard, { Facility } from "./FacilityCard";
+import { Flex, Spin } from "antd";
 
 const SearchFacility: React.FC = () => {
   const query: Record<string, any> = {};
@@ -16,6 +17,7 @@ const SearchFacility: React.FC = () => {
     searchQuery: searchTerm,
     delay: 600,
   });
+
   if (!!debouncedTerm) {
     query["searchTerm"] = searchTerm;
   }
@@ -26,7 +28,6 @@ const SearchFacility: React.FC = () => {
     AOS.init({ duration: 1000, once: false });
   }, []);
 
-  // Filter facilities based on search term
   const filteredFacilities = data?.data.filter((facility: Facility) =>
     facility.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -66,23 +67,22 @@ const SearchFacility: React.FC = () => {
       </div>
 
       {/* Facility Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {isLoading
-          ? [...Array(3)].map((_, index) => (
-              <div
-                key={index}
-                className="bg-white p-4 rounded-lg shadow-lg"
-                data-aos="fade-up"
-              >
-                <FacilityCard facility={undefined as any} /> {/* Placeholder */}
-              </div>
-            ))
-          : (filteredFacilities || [])
-              .slice(0, 3)
-              .map((facility: Facility) => (
-                <FacilityCard key={facility._id} facility={facility} />
-              ))}
-      </div>
+      {isLoading ? (
+        <div className="flex justify-center items-center">
+          <div>
+            <Flex align="center" gap="middle">
+           
+              <Spin size="large" />
+            </Flex>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {(filteredFacilities || []).map((facility: Facility) => (
+            <FacilityCard key={facility._id} facility={facility} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

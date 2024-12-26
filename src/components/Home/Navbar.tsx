@@ -12,6 +12,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { setLogout, useCurrentUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import logo from "../../../public/logo.png"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -67,10 +68,8 @@ const Navbar = () => {
             isMenuOpen ? "hidden" : "block"
           }`}
         >
-          <span className="text-3xl font-bold  text-blue-600">
-            <h1>
-              Sport <span className="text-orange-600">Ease</span>
-            </h1>
+          <span className=" font-bold  text-blue-600">
+            <img  src={logo} className="w-20"/>
           </span>
         </Link>
 
